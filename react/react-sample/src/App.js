@@ -3,25 +3,23 @@ import axios from 'axios';
 
 class App extends React.Component {
 
-  handleSubmit(event) {
+  constructor() {
+
+    super();
+
+    this.state = {
+
+      responseValue: "",
+    }
+  }
+
+  handleSubmit = () => {
 
     axios.get('/api')
-      .then((response) => { console.log(response); })
-      .catch(console.error);
-  }
+      .then((response) => {
 
-  handleSubmit2(event) {
-
-    axios.get('/api/py')
-      .then((response) => { console.log(response); })
-      .catch(console.error);
-  }
-
-
-  handleSubmit3(event) {
-
-    axios.get('/api/ls')
-      .then((response) => { console.log(response); })
+        this.setState({responseValue: response.data})
+      })
       .catch(console.error);
   }
 
@@ -30,8 +28,7 @@ class App extends React.Component {
 
       <div>
         <input type="button" value="Submit" onClick={this.handleSubmit}/>
-        <input type="button" value="Submit2" onClick={this.handleSubmit2}/>
-        <input type="button" value="Submit3" onClick={this.handleSubmit3}/>
+        <p>{this.state.responseValue}</p>
       </div>
     )
   }
