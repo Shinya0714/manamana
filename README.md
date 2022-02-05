@@ -1,9 +1,9 @@
 <h1>システム</h1>
-<img src="go/app/images/logo.png">
+<img src="./react/react-sample/src/images/logo.png">
 <br/>
 <br/>
 <h1>インフラ構成図</h1>
-<img src="go/app/images/構成図.png">
+<img src="./react/react-sample/src/images/構成図.png">
 <br/>
 <br/>
 <h1>使用技術</h1>
@@ -19,7 +19,7 @@
 <h1>今後の展開</h1>
 制作中です。<br/>
 <br/>
-ipo（新規公開株式）の購入意思表示をseleniumで行い、<br/>
+ipo（新規公開株式）の購入意思表示をagoutiで行い、<br/>
 管理するシステムです。<br/>
 <br/>
 DBは必要かどうか判断してから導入しようと考えています。
