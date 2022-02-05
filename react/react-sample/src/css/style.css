@@ -1,0 +1,29 @@
+#logo {
+
+  width: 150px;
+  height: 150px;
+}
+
+.borderBottomColor {
+
+  border-bottom: 1px solid white;
+}
+
+.divBorder {
+
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.contentDiv {
+
+  border: 1px solid black;
+  margin-top: -1px;
+}
+
+footer {
+
+  text-align: center;
+  margin: 20px;
+}
