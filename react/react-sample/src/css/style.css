@@ -4,7 +4,7 @@
   height: 150px;
 }
 
-.borderBottomColor {
+.active {
 
   border-bottom: 1px solid white;
 }
