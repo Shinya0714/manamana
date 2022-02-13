@@ -11,11 +11,13 @@ class App extends React.Component {
 
     this.state = {
 
-      nav1Class: "active borderBottomColor",
+      nav1Class: "active",
       nav2Class: "",
       nav3Class: "",
       selectedDiv: 1,
-      responseValue: ""
+      responseValue: "",
+
+      balance: 0
     }
   }
 
@@ -25,7 +27,7 @@ class App extends React.Component {
 
       case 1:
 
-        this.setState({nav1Class: "active borderBottomColor"})
+        this.setState({nav1Class: "active"})
         this.setState({nav2Class: ""})
         this.setState({nav3Class: ""})
         this.setState({selectedDiv: 1})
@@ -33,7 +35,7 @@ class App extends React.Component {
       case 2:
           
         this.setState({nav1Class: ""})
-        this.setState({nav2Class: "active borderBottomColor"})
+        this.setState({nav2Class: "active"})
         this.setState({nav3Class: ""})
         this.setState({selectedDiv: 2})
         break;
@@ -41,15 +43,25 @@ class App extends React.Component {
       
         this.setState({nav1Class: ""})
         this.setState({nav2Class: ""})
-        this.setState({nav3Class: "active borderBottomColor"})
+        this.setState({nav3Class: "active"})
         this.setState({selectedDiv: 3})
         break;
     }
   }
 
+  getOwner = () => {
+
+    axios.get('/owner')
+      .then((response) => {
+
+        this.setState({balance: response.data})
+      })
+      .catch(console.error);
+  }
+
   sbiBookBuildingSubmit = () => {
 
-    axios.get('/api')
+    axios.get('/api/sbiBookBuilding')
       .then((response) => {
 
         this.setState({responseValue: response.data})
@@ -77,12 +89,16 @@ class App extends React.Component {
 
             {/* div1 */}
             <div class="contentDiv" style={{display: this.state.selectedDiv == 1? '' : 'none'}}>
-              資産状況
+              買い付け余力：{this.state.balance}
             </div>
 
             {/* div2 */}
             <div class="contentDiv" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
-              SBI：<input type="button" value="Submit" onClick={this.sbiBookBuildingSubmit()} />
+              SBI：<input type="button" value="Submit" onClick={() => this.sbiBookBuildingSubmit()} />
+              <br/>
+              ユーザーID:<input type="text" name="#" />
+              <br/>
+              パスワード:<input type="text" name="#" />
               <br/>
               結果：{this.state.responseValue}
             </div>
