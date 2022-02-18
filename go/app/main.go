@@ -1,13 +1,12 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	_ "github.com/lib/pq"
 
@@ -15,53 +14,44 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sclevine/agouti"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-type OWNER struct {
-	id          int
-	create_time string
-	update_time string
-	balance     int
+type Owner struct {
+	id         uint   `gorm:"primary_key"`
+	createTime string `column:"create_time"`
+	updateTime string `column:"update_time"`
+	balance    int    `column:"balance"`
 }
 
 func main() {
 
 	loadEnv()
 
-	// DB接続
-	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", "db_container", os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB"))
-
-	db, err := sql.Open("postgres", connectionString)
-	if err != nil {
-		log.Fatalln("接続失敗", err)
-	}
+	db := gormConnect()
 	defer db.Close()
 
+	owner := []Owner{}
+
 	// SELECT
-	rows, err := db.Query("SELECT * FROM owner")
-	if err != nil {
+	db.Find(&owner)
 
-		fmt.Println(err)
+	for _, target := range owner {
+
+		fmt.Println(target.id)
+		fmt.Println(target.createTime)
+		fmt.Println(target.updateTime)
+		fmt.Println(target.balance)
 	}
-
-	var owners []OWNER
-
-	for rows.Next() {
-
-		var owner OWNER
-
-		rows.Scan(&owner.id, &owner.create_time, &owner.update_time, &owner.balance)
-
-		owners = append(owners, owner)
-	}
-
-	fmt.Println(owners)
 
 	e := echo.New()
 	e.Use(middleware.CORS())
 
 	// ルーティング
 	e.GET("/sbiBookBuilding", sbiBookBuilding)
+	e.GET("/sbiBalance", getSbiBalance)
 
 	// local サーバー
 	e.Logger.Fatal(e.Start(":8000"))
@@ -73,6 +63,25 @@ func loadEnv() {
 	if err != nil {
 		fmt.Printf("読み込み出来ませんでした: %v", err)
 	}
+}
+
+func gormConnect() *gorm.DB {
+
+	HOST := "db_container"
+	PORT := "5432"
+	USER := os.Getenv("POSTGRES_USER")
+	PASSWORD := os.Getenv("POSTGRES_PASSWORD")
+	DBNAME := os.Getenv("POSTGRES_DB")
+
+	CONNECT := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", HOST, PORT, USER, DBNAME, PASSWORD)
+
+	db, err := gorm.Open("postgres", CONNECT)
+	if err != nil {
+
+		panic(err.Error())
+	}
+
+	return db
 }
 
 func sbiBookBuilding(c echo.Context) (err error) {
@@ -162,6 +171,68 @@ func sbiBookBuilding(c echo.Context) (err error) {
 
 	c.JSON(http.StatusOK, "対象数："+strconv.Itoa(targets))
 	c.JSON(http.StatusOK, "対象："+strings.Join(targetsNameList[:], ","))
+
+	return
+}
+
+func getSbiBalance(c echo.Context) (err error) {
+
+	driver := agouti.ChromeDriver(
+
+		agouti.ChromeOptions("args", []string{
+
+			"--headless",
+			"--window-size=300,1200",
+			"--blink-settings=imagesEnabled=false",
+			"--disable-gpu",
+			"no-sandbox",
+		}),
+	)
+
+	defer driver.Stop()
+	driver.Start()
+
+	fmt.Println("driver読み込み完了")
+
+	page, err := driver.NewPage()
+	if err != nil {
+
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		return
+	}
+
+	// 対象サイトに移動
+	page.Navigate("https://www.sbisec.co.jp/ETGate")
+
+	// ユーザーネーム
+	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+
+	// パスワード
+	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+
+	// 「ログイン」
+	page.FindByXPath("//*[@id='SUBAREA01']/form/div/div/div/p[2]/a/input").Click()
+
+	time.Sleep(3 * time.Second)
+
+	page.FindByXPath("/html/body/div[1]/div[1]/div[2]/div/ul/li[3]/a/img").Click()
+
+	time.Sleep(3 * time.Second)
+
+	kaitsukeKano2daysAfter, err := page.FindByXPath("/html/body/div[1]/table/tbody/tr/td[1]/table/tbody/tr[2]/td/table[1]/tbody/tr/td/form/table[2]/tbody/tr[1]/td[2]/table[4]/tbody/tr/td[1]/table[2]/tbody/tr[3]/td[2]/div").Text()
+	if err != nil {
+
+		fmt.Printf("err: %v\n", err)
+	}
+	time.Sleep(3 * time.Second)
+
+	kaitsukeKano3daysAfter, err := page.FindByXPath("/html/body/div[1]/table/tbody/tr/td[1]/table/tbody/tr[2]/td/table[1]/tbody/tr/td/form/table[2]/tbody/tr[1]/td[2]/table[4]/tbody/tr/td[1]/table[2]/tbody/tr[4]/td[2]/div").Text()
+	if err != nil {
+
+		fmt.Printf("err: %v\n", err)
+	}
+	c.JSON(http.StatusOK, "買付余力(2営業日後)"+kaitsukeKano2daysAfter)
+	c.JSON(http.StatusOK, "買付余力(3営業日後)"+kaitsukeKano3daysAfter)
 
 	return
 }
