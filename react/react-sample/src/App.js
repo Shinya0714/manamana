@@ -16,6 +16,7 @@ class App extends React.Component {
       nav3Class: "",
       selectedDiv: 1,
       responseValue: "",
+      responseValueForSbi: "",
 
       balance: 0
     }
@@ -59,6 +60,16 @@ class App extends React.Component {
       .catch(console.error);
   }
 
+  getSbiBalance = () => {
+
+    axios.get('/api/sbiBalance')
+      .then((response) => {
+
+        this.setState({responseValueForSbi: response.data})
+      })
+      .catch(console.error);
+  }
+  
   sbiBookBuildingSubmit = () => {
 
     axios.get('/api/sbiBookBuilding')
@@ -89,7 +100,9 @@ class App extends React.Component {
 
             {/* div1 */}
             <div class="contentDiv" style={{display: this.state.selectedDiv == 1? '' : 'none'}}>
-              買い付け余力：{this.state.balance}
+              <input type="button" value="最新の情報に更新" onClick={() => this.getSbiBalance()} />
+              <br/>
+              SBI 買い付け余力：{this.state.responseValueForSbi}
             </div>
 
             {/* div2 */}
