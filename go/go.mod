@@ -1,4 +1,4 @@
-module github.com/Shinya0714/testgo
+module github.com/Shinya0714/manamana
 
 go 1.17
 

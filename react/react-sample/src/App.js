@@ -17,6 +17,7 @@ class App extends React.Component {
       selectedDiv: 1,
       responseValue: "",
       responseValueForSbi: "",
+      responseValueForMizuho: "",
 
       balance: 0
     }
@@ -60,7 +61,7 @@ class App extends React.Component {
       .catch(console.error);
   }
 
-  getSbiBalance = () => {
+  getBalance = () => {
 
     axios.get('/api/sbiBalance')
       .then((response) => {
@@ -68,8 +69,15 @@ class App extends React.Component {
         this.setState({responseValueForSbi: response.data})
       })
       .catch(console.error);
+
+      axios.get('/api/mizuhoBalance')
+      .then((response) => {
+
+        this.setState({responseValueForMizuho: response.data})
+      })
+      .catch(console.error);
   }
-  
+
   sbiBookBuildingSubmit = () => {
 
     axios.get('/api/sbiBookBuilding')
@@ -99,25 +107,49 @@ class App extends React.Component {
             </nav>
 
             {/* div1 */}
-            <div class="contentDiv" style={{display: this.state.selectedDiv == 1? '' : 'none'}}>
-              <input type="button" value="最新の情報に更新" onClick={() => this.getSbiBalance()} />
+            <div class="contentDiv p-3" style={{display: this.state.selectedDiv == 1? '' : 'none'}}>
+              <input type="button" value="最新の情報に更新" class="m-3" onClick={() => this.getBalance()} />
               <br/>
-              SBI 買い付け余力：{this.state.responseValueForSbi}
+              <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">買い付け余力</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">SBI</th>
+                  <td>{this.state.responseValueForSbi}</td>
+                </tr>
+                <tr>
+                  <th scope="row">みずほ</th>
+                  <td>{this.state.responseValueForMizuho}</td>
+                </tr>
+              </tbody>
+            </table>
             </div>
 
             {/* div2 */}
-            <div class="contentDiv" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
-              SBI：<input type="button" value="Submit" onClick={() => this.sbiBookBuildingSubmit()} />
-              <br/>
-              ユーザーID:<input type="text" name="#" />
-              <br/>
-              パスワード:<input type="text" name="#" />
-              <br/>
-              結果：{this.state.responseValue}
+            <div class="contentDiv p-3" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">結果</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">SBI　<input type="button" value="実行" onClick={() => this.sbiBookBuildingSubmit()} /></th>
+                  <td>{this.state.responseValue}</td>
+                </tr>
+              </tbody>
+            </table>
             </div>
 
             {/* div3 */}
-            <div class="contentDiv" style={{display: this.state.selectedDiv == 3? '' : 'none'}}>
+            <div class="contentDiv p-3" style={{display: this.state.selectedDiv == 3? '' : 'none'}}>
               設定
             </div>
           </div>
