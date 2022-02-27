@@ -6,5 +6,5 @@ import (
 
 func main() {
 
-	h := handler.New()
+	handler.Handler()
 }

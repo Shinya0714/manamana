@@ -55,6 +55,8 @@ func Handler() {
 
 	// local サーバー
 	e.Logger.Fatal(e.Start(":8000"))
+
+	return
 }
 
 func loadEnv() {

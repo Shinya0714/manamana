@@ -61,6 +61,16 @@ class App extends React.Component {
       .catch(console.error);
   }
 
+  getSchedule = () => {
+
+    axios.get('/schedule')
+      .then((response) => {
+
+        this.setState({balance: response.data})
+      })
+      .catch(console.error);
+  }
+
   getBalance = () => {
 
     axios.get('/api/sbiBalance')
@@ -132,6 +142,7 @@ class App extends React.Component {
 
             {/* div2 */}
             <div class="contentDiv p-3" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
+            <input type="button" value="スケジュールの取得" class="m-3" onClick={() => this.getSchedule()} />
             <table class="table">
               <thead>
                 <tr>
