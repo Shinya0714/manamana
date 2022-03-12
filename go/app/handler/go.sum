@@ -1,6 +1,4 @@
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
-github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220312062646-323df25917f8 h1:40JmFjisAzVcFxaMLYo9RMtRChUfZFm0Ud3amzQeJ98=
-github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220312062646-323df25917f8/go.mod h1:2sxsb32ZDlDVLSTx+pTW80c1Q8JoLjgUcCdTTaItkHk=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

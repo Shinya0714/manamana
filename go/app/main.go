@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Shinya0714/manamana/handler"
+	"github.com/Shinya0714/manamana/go/app/handler"
 )
 
 func main() {

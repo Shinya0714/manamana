@@ -3,22 +3,28 @@ COPY ./go/app /app/go
 
 WORKDIR /app/go/handler
 
-# 初期化
-RUN go mod init github.com/Shinya0714/manamana/handler
-
-WORKDIR /app/go
+RUN rm go.mod
 
 # 初期化
-RUN go mod init github.com/Shinya0714/manamana
+RUN go mod init github.com/Shinya0714/manamana/go/app/handler
 
-# モジュール取得
 RUN go get github.com/sclevine/agouti \
  && go get github.com/labstack/echo/v4 \
  && go get github.com/labstack/echo/v4/middleware \
  && go get github.com/joho/godotenv \
  && go get github.com/lib/pq \
- && go get github.com/jinzhu/gorm \
- && go get github.com/Shinya0714/manamana/handler
+ && go get github.com/jinzhu/gorm
+
+WORKDIR /app/go
+
+RUN rm go.mod
+
+# 初期化
+RUN go mod init github.com/Shinya0714/manamana
+
+# モジュール取得
+RUN go get github.com/Shinya0714/manamana/go/app/handler
+ 
 # ビルド
 RUN go build -o main . 
 
