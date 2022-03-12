@@ -2,10 +2,8 @@ module github.com/Shinya0714/manamana
 
 go 1.17
 
-replace github.com/Shinya0714/manamana/handler => ./app/handler
-
 require (
-	github.com/Shinya0714/manamana/handler v0.0.0-00010101000000-000000000000 // indirect
+	github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220227071833-8d5398d2ae8a // indirect
 	github.com/cilium/ebpf v0.8.0 // indirect
 	github.com/cosiner/argv v0.1.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
