@@ -61,9 +61,9 @@ class App extends React.Component {
       .catch(console.error);
   }
 
-  getSchedule = () => {
+  schedule = () => {
 
-    axios.get('/schedule')
+    axios.get('/api/schedule')
       .then((response) => {
 
         this.setState({balance: response.data})
@@ -101,74 +101,69 @@ class App extends React.Component {
   render() {
     return (
 
-      <html>
-        <head>
-          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-        </head>
-        <body>
-          <div class="container">
-            <img src={imgLogo} class="mt-3 mb-3" id="logo" />
+      <div>
+        <div className="container">
+          <img src={imgLogo} className="mt-3 mb-3" id="logo" />
 
-            {/* nav */}
-            <nav class="navbar navbar-expand-sm py-0">
-              <a class={'divBorder nav-item nav-link ' + this.state.nav1Class} href="#" onClick={() => this.divHundling(1)}>資産状況</a>
-              <a class={'divBorder nav-item nav-link ' + this.state.nav2Class} href="#" onClick={() => this.divHundling(2)}>申し込み</a>
-              <a class={'divBorder nav-item nav-link ' + this.state.nav3Class} href="#" onClick={() => this.divHundling(3)}>設定</a>
-            </nav>
+          {/* nav */}
+          <nav className="navbar navbar-expand-sm py-0">
+            <a className={'divBorder nav-item nav-link ' + this.state.nav1Class} href="#" onClick={() => this.divHundling(1)}>資産状況</a>
+            <a className={'divBorder nav-item nav-link ' + this.state.nav2Class} href="#" onClick={() => this.divHundling(2)}>申し込み</a>
+            <a className={'divBorder nav-item nav-link ' + this.state.nav3Class} href="#" onClick={() => this.divHundling(3)}>設定</a>
+          </nav>
 
-            {/* div1 */}
-            <div class="contentDiv p-3" style={{display: this.state.selectedDiv == 1? '' : 'none'}}>
-              <input type="button" value="最新の情報に更新" class="m-3" onClick={() => this.getBalance()} />
-              <br/>
-              <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">買い付け余力</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">SBI</th>
-                  <td>{this.state.responseValueForSbi}</td>
-                </tr>
-                <tr>
-                  <th scope="row">みずほ</th>
-                  <td>{this.state.responseValueForMizuho}</td>
-                </tr>
-              </tbody>
-            </table>
-            </div>
-
-            {/* div2 */}
-            <div class="contentDiv p-3" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
-            <input type="button" value="スケジュールの取得" class="m-3" onClick={() => this.getSchedule()} />
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">結果</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">SBI　<input type="button" value="実行" onClick={() => this.sbiBookBuildingSubmit()} /></th>
-                  <td>{this.state.responseValue}</td>
-                </tr>
-              </tbody>
-            </table>
-            </div>
-
-            {/* div3 */}
-            <div class="contentDiv p-3" style={{display: this.state.selectedDiv == 3? '' : 'none'}}>
-              設定
-            </div>
+          {/* div1 */}
+          <div className="contentDiv p-3" style={{display: this.state.selectedDiv == 1? '' : 'none'}}>
+            <input type="button" value="最新の情報に更新" className="m-3" onClick={() => this.getBalance()} />
+            <br/>
+            <table className="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">買い付け余力</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">SBI</th>
+                <td>{this.state.responseValueForSbi}</td>
+              </tr>
+              <tr>
+                <th scope="row">みずほ</th>
+                <td>{this.state.responseValueForMizuho}</td>
+              </tr>
+            </tbody>
+          </table>
           </div>
-        </body>
+
+          {/* div2 */}
+          <div className="contentDiv p-3" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
+          <input type="button" value="スケジュールの取得" className="m-3" onClick={() => this.schedule()} />
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">結果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">SBI　<input type="button" value="実行" onClick={() => this.sbiBookBuildingSubmit()} /></th>
+                <td>{this.state.responseValue}</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+          {/* div3 */}
+          <div className="contentDiv p-3" style={{display: this.state.selectedDiv == 3? '' : 'none'}}>
+            設定
+          </div>
+        </div>
         <footer>
           <p>©️MANAMANA</p>
         </footer>
-      </html>
+      </div>
     )
   }
 }
