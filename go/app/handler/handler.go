@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -49,6 +50,7 @@ func Handler() {
 	e.Use(middleware.CORS())
 
 	// ルーティング
+	e.GET("/schedule", getSchedule)
 	e.GET("/sbiBookBuilding", sbiBookBuilding)
 	e.GET("/sbiBalance", getSbiBalance)
 	e.GET("/mizuhoBalance", getMizuhoBalance)
@@ -341,6 +343,71 @@ func getMizuhoBalance(c echo.Context) (err error) {
 	}
 
 	c.JSON(http.StatusOK, "買付余力"+zandaka)
+
+	return
+}
+
+func getSchedule(c echo.Context) (err error) {
+
+	driver := agouti.ChromeDriver(
+
+		agouti.ChromeOptions("args", []string{
+
+			"--headless",
+			"--window-size=300,1200",
+			"--blink-settings=imagesEnabled=false",
+			"--disable-gpu",
+			"no-sandbox",
+		}),
+	)
+
+	defer driver.Stop()
+	driver.Start()
+
+	fmt.Println("driver読み込み完了")
+
+	page, err := driver.NewPage()
+	if err != nil {
+
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		return
+	}
+
+	page.Navigate("https://www.nikkei.com/markets/kigyo/ipo/money-schedule/")
+
+	xpathStringForBookBuildingSpan := ""
+	xpathStringForCompanyNameSpan := ""
+
+	bookBuildingString := ""
+	companyNameString := ""
+
+	m := make(map[string]string)
+
+	for i := 1; i <= 50; i++ {
+
+		xpathStringForCompanyNameSpan = fmt.Sprintf("/html/body/div[8]/div/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/table/tbody[1]/tr[%d]/td[2]", i)
+		xpathStringForBookBuildingSpan = fmt.Sprintf("/html/body/div[8]/div/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/table/tbody[1]/tr[%d]/td[3]", i)
+
+		companyNameString, _ = page.FindByXPath(xpathStringForCompanyNameSpan).Text()
+		bookBuildingString, err = page.FindByXPath(xpathStringForBookBuildingSpan).Text()
+		if err != nil {
+
+			break
+		} else {
+
+			m[companyNameString] = bookBuildingString
+		}
+	}
+
+	data, err := json.Marshal(m)
+	if err != nil {
+		fmt.Println("JSON marshal error: ", err)
+		return
+	}
+
+	fmt.Println(string(data))
+
+	c.JSON(http.StatusOK, "getSchedule")
 
 	return
 }
