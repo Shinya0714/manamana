@@ -1,6 +1,7 @@
 FROM golang:latest
 COPY ./go/app /app/go
 
+# 切り替え
 WORKDIR /app/go/handler
 
 RUN rm go.mod
@@ -8,6 +9,7 @@ RUN rm go.mod
 # 初期化
 RUN go mod init github.com/Shinya0714/manamana/go/app/handler
 
+# モジュール取得
 RUN go get github.com/sclevine/agouti \
  && go get github.com/labstack/echo/v4 \
  && go get github.com/labstack/echo/v4/middleware \
@@ -15,6 +17,10 @@ RUN go get github.com/sclevine/agouti \
  && go get github.com/lib/pq \
  && go get github.com/jinzhu/gorm
 
+# ビルド
+RUN go build -o handler .
+
+# 切り替え
 WORKDIR /app/go
 
 RUN rm go.mod
