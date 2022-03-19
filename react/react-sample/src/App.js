@@ -18,6 +18,7 @@ class App extends React.Component {
       responseValue: "",
       responseValueForSbi: "",
       responseValueForMizuho: "",
+      scheduleListString: "",
 
       balance: 0
     }
@@ -66,7 +67,7 @@ class App extends React.Component {
     axios.get('/api/schedule')
       .then((response) => {
 
-        this.setState({balance: response.data})
+          this.setState({scheduleListString: response.data})
       })
       .catch(console.error);
   }
@@ -139,6 +140,7 @@ class App extends React.Component {
           {/* div2 */}
           <div className="contentDiv p-3" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
           <input type="button" value="スケジュールの取得" className="m-3" onClick={() => this.schedule()} />
+          <p>{this.state.scheduleListString}</p>
           <table className="table">
             <thead>
               <tr>

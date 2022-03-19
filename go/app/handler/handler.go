@@ -30,8 +30,8 @@ func Handler() {
 
 	loadEnv()
 
-	db := gormConnect()
-	defer db.Close()
+	// db := gormConnect()
+	// defer db.Close()
 
 	// owner := []Owner{}
 
@@ -50,10 +50,10 @@ func Handler() {
 	e.Use(middleware.CORS())
 
 	// ルーティング
-	e.GET("/schedule", getSchedule)
 	e.GET("/sbiBookBuilding", sbiBookBuilding)
 	e.GET("/sbiBalance", getSbiBalance)
 	e.GET("/mizuhoBalance", getMizuhoBalance)
+	e.GET("/schedule", getSchedule)
 
 	// local サーバー
 	e.Logger.Fatal(e.Start(":8000"))
@@ -405,9 +405,7 @@ func getSchedule(c echo.Context) (err error) {
 		return
 	}
 
-	fmt.Println(string(data))
-
-	c.JSON(http.StatusOK, "getSchedule")
+	c.JSON(http.StatusOK, string(data))
 
 	return
 }
