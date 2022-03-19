@@ -18,7 +18,7 @@ class App extends React.Component {
       responseValue: "",
       responseValueForSbi: "",
       responseValueForMizuho: "",
-      scheduleListString: "",
+      scheduleListString: [],
 
       balance: 0
     }

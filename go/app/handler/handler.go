@@ -405,7 +405,7 @@ func getSchedule(c echo.Context) (err error) {
 		return
 	}
 
-	c.JSON(http.StatusOK, string(data))
+	c.JSON(http.StatusOK, data)
 
 	return
 }
