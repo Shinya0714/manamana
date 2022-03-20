@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -381,7 +380,10 @@ func getSchedule(c echo.Context) (err error) {
 	bookBuildingString := ""
 	companyNameString := ""
 
-	m := make(map[string]string)
+	// m := make(map[string]string)
+
+	var companyNameStringList []string
+	var bookBuildingStringList []string
 
 	for i := 1; i <= 50; i++ {
 
@@ -395,17 +397,25 @@ func getSchedule(c echo.Context) (err error) {
 			break
 		} else {
 
-			m[companyNameString] = bookBuildingString
+			companyNameStringList = append(companyNameStringList, companyNameString)
+			bookBuildingStringList = append(bookBuildingStringList, bookBuildingString)
+
+			// m[companyNameString] = bookBuildingString
 		}
 	}
 
-	data, err := json.Marshal(m)
-	if err != nil {
-		fmt.Println("JSON marshal error: ", err)
-		return
-	}
+	// data, err := json.Marshal(m)
+	// if err != nil {
+	// 	fmt.Println("JSON marshal error: ", err)
+	// 	return
+	// }
 
-	c.JSON(http.StatusOK, string(data))
+	fmt.Println(strings.Join(companyNameStringList[:], ","))
+	fmt.Println(strings.Join(bookBuildingStringList[:], ","))
+
+	fmt.Println("test handler update test")
+
+	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ","))
 
 	return
 }
