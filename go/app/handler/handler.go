@@ -399,21 +399,8 @@ func getSchedule(c echo.Context) (err error) {
 
 			companyNameStringList = append(companyNameStringList, companyNameString)
 			bookBuildingStringList = append(bookBuildingStringList, bookBuildingString)
-
-			// m[companyNameString] = bookBuildingString
 		}
 	}
-
-	// data, err := json.Marshal(m)
-	// if err != nil {
-	// 	fmt.Println("JSON marshal error: ", err)
-	// 	return
-	// }
-
-	fmt.Println(strings.Join(companyNameStringList[:], ","))
-	fmt.Println(strings.Join(bookBuildingStringList[:], ","))
-
-	fmt.Println("module test 0327 update2")
 
 	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ","))
 

@@ -18,7 +18,8 @@ class App extends React.Component {
       responseValue: "",
       responseValueForSbi: "",
       responseValueForMizuho: "",
-      scheduleListString: "",
+      companyNameStringList: [],
+      bookBuildingStringList: [],
 
       balance: 0
     }
@@ -67,7 +68,8 @@ class App extends React.Component {
     axios.get('/api/schedule')
       .then((response) => {
 
-          this.setState({scheduleListString: response.data})
+        this.setState({companyNameStringList: response.data.split('&')[0].split(',')})
+        this.setState({bookBuildingStringList: response.data.split('&')[1].split(',')})
       })
       .catch(console.error);
   }
@@ -144,15 +146,21 @@ class App extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th scope="col"></th>
+                <th scope="col">ブックビルディング期間</th>
+                <th scope="col">新規上場企業名</th>
+                <th scope="col">SBI</th>
                 <th scope="col">結果</th>
               </tr>
             </thead>
             <tbody>
+            {this.state.companyNameStringList.map((companyName, i) => (
               <tr>
-                <th scope="row">SBI　<input type="button" value="実行" onClick={() => this.sbiBookBuildingSubmit()} /></th>
+                <td key={this.state.bookBuildingStringList[i]}>{this.state.bookBuildingStringList[i]}</td>
+                <td key={companyName}>{companyName}</td>
+                <td scope="row"><input type="button" value="実行" onClick={() => this.sbiBookBuildingSubmit()} /></td>
                 <td>{this.state.responseValue}</td>
               </tr>
+            ))}
             </tbody>
           </table>
           </div>
