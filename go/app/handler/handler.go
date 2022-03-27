@@ -413,7 +413,7 @@ func getSchedule(c echo.Context) (err error) {
 	fmt.Println(strings.Join(companyNameStringList[:], ","))
 	fmt.Println(strings.Join(bookBuildingStringList[:], ","))
 
-	fmt.Println("module test 0327")
+	fmt.Println("module test 0327 update")
 
 	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ","))
 
