@@ -1,4 +1,5 @@
 FROM golang:latest
+
 COPY ./go/app /app/go
 
 # 切り替え
@@ -10,16 +11,19 @@ RUN rm go.mod
 RUN go mod init github.com/Shinya0714/manamana/go/app/handler
 
 # モジュール取得
-RUN go get github.com/sclevine/agouti \
- && go get github.com/labstack/echo/v4 \
- && go get github.com/labstack/echo/v4/middleware \
- && go get github.com/joho/godotenv \
- && go get github.com/lib/pq \
- && go get github.com/jinzhu/gorm
+RUN go mod tidy
+
+RUN rm handler
 
 # ビルド
-RUN go build -o handler .
+RUN go build -o handler . 
 
+RUN touch handler
+
+RUN pwd
+
+RUN ls -lt
+                        
 # 切り替え
 WORKDIR /app/go
 
@@ -29,10 +33,14 @@ RUN rm go.mod
 RUN go mod init github.com/Shinya0714/manamana
 
 # モジュール取得
-RUN go get github.com/Shinya0714/manamana/go/app/handler
- 
+RUN go mod tidy
+
+RUN rm main
+
 # ビルド
 RUN go build -o main . 
+
+RUN touch main
 
 # unzip取得
 RUN apt-get update && apt-get install -y unzip
@@ -46,5 +54,9 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 ADD https://chromedriver.storage.googleapis.com/93.0.4577.15/chromedriver_linux64.zip /usr/local/go/bin/
 RUN cd /usr/local/go/bin/ \
  && unzip chromedriver_linux64.zip
+
+RUN pwd
+
+RUN ls -lt
 
 CMD ["/app/go/main"]
