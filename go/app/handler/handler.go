@@ -10,7 +10,6 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -68,24 +67,24 @@ func loadEnv() {
 	}
 }
 
-func gormConnect() *gorm.DB {
+// func gormConnect() *gorm.DB {
 
-	HOST := "db_container"
-	PORT := "5432"
-	USER := os.Getenv("POSTGRES_USER")
-	PASSWORD := os.Getenv("POSTGRES_PASSWORD")
-	DBNAME := os.Getenv("POSTGRES_DB")
+// 	HOST := "db_container"
+// 	PORT := "5432"
+// 	USER := os.Getenv("POSTGRES_USER")
+// 	PASSWORD := os.Getenv("POSTGRES_PASSWORD")
+// 	DBNAME := os.Getenv("POSTGRES_DB")
 
-	CONNECT := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", HOST, PORT, USER, DBNAME, PASSWORD)
+// 	CONNECT := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", HOST, PORT, USER, DBNAME, PASSWORD)
 
-	db, err := gorm.Open("postgres", CONNECT)
-	if err != nil {
+// 	db, err := gorm.Open("postgres", CONNECT)
+// 	if err != nil {
 
-		panic(err.Error())
-	}
+// 		panic(err.Error())
+// 	}
 
-	return db
-}
+// 	return db
+// }
 
 func sbiBookBuilding(c echo.Context) (err error) {
 
