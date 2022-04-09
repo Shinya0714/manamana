@@ -20,6 +20,7 @@ class App extends React.Component {
       responseValueForMizuho: "",
       companyNameStringList: [],
       bookBuildingStringList: [],
+      bookBuildingPossibleBoolList: [],
 
       balance: 0
     }
@@ -70,6 +71,7 @@ class App extends React.Component {
 
         this.setState({companyNameStringList: response.data.split('&')[0].split(',')})
         this.setState({bookBuildingStringList: response.data.split('&')[1].split(',')})
+        this.setState({bookBuildingPossibleBoolList: response.data.split('&')[2].split(',')})
       })
       .catch(console.error);
   }
@@ -99,6 +101,30 @@ class App extends React.Component {
         this.setState({responseValue: response.data})
       })
       .catch(console.error);
+  }
+
+  checkBookoBuildingPossible(target) {
+
+    var boolean = false;
+
+    if(target == 'false') {
+
+      boolean = true;
+    }
+
+    return boolean;
+  }
+
+  returnFullDate(year, month ,day) {
+
+    var year = year;
+    var month = month;
+    var day = day;
+    month = ('0' + month).slice(-2);
+    day = ('0' + day).slice(-2);
+    var fullDate = year + month + day;
+
+    return fullDate;
   }
 
   render() {
@@ -157,7 +183,7 @@ class App extends React.Component {
               <tr>
                 <td key={this.state.bookBuildingStringList[i]}>{this.state.bookBuildingStringList[i]}</td>
                 <td key={companyName}>{companyName}</td>
-                <td scope="row"><input type="button" value="実行" onClick={() => this.sbiBookBuildingSubmit()} /></td>
+                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i])} onClick={() => this.sbiBookBuildingSubmit()}/></td>
                 <td>{this.state.responseValue}</td>
               </tr>
             ))}
