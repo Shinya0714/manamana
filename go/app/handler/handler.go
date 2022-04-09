@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"regexp"
 
 	_ "github.com/lib/pq"
 
@@ -122,57 +123,55 @@ func sbiBookBuilding(c echo.Context) (err error) {
 	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
 
 	// 「ログイン」
-	page.FindByXPath("//*[@id='SUBAREA01']/form/div/div/div/p[2]/a/input").Click()
+	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
 
 	// 「ブックビルディング情報」
-	page.Navigate("https://site2.sbisec.co.jp/ETGate/?OutSide=on&_ControlID=WPLETmgR001Control&_DataStoreID=DSWPLETmgR001Control&burl=search_domestic&dir=ipo%2F&file=stock_info_ipo.html&cat1=domestic&cat2=ipo&getFlg=on")
+	page.Navigate("https://site2.sbisec.co.jp/ETGate/?OutSide=on&_ControlID=WPLETmgR001Control&_DataStoreID=DSWPLETmgR001Control&burl=search_domestic&dir=ipo%2F&file=stock_info_ipo.html&cat1=domestic&cat2=ipo&getFlg=on&int_pr1=150313_cmn_gnavi:6_dmenu_04")
 
 	// 「新規上場株式ブックビルディング／購入意思表示」
-	page.FindByXPath("/html/body/div[4]/div/table/tbody/tr/td[1]/div/div[10]/div/div/a").Click()
+	page.FindByXPath("/html/body/div[4]/div/table/tbody/tr/td[1]/div/div[10]/div/div/a/img").Click()
 
-	targets, err := page.Find("//img[@src='//sbisec.akamaized.net/v3/images/common/trading/b_ipo_moshikomi.gif']").Count()
-	if err != nil {
+	time.Sleep(3 * time.Second)
 
-		targets = 0
-	}
-	fmt.Println("対象取得")
+	for i := 0; i < 50; i++ {
 
-	fmt.Println(targets)
+		bookBuildingPossibleString := "false";
 
-	var targetsNameList []string
+		target, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[2]/td[5]").Text();
+		if(err != nil) {
 
-	if targets != 0 {
+			// NOOP
+		}else {
 
-		for i := 0; i < targets; i++ {
-
-			page.FindByXPath("//img[@src='//sbisec.akamaized.net/v3/images/common/trading/b_ipo_moshikomi.gif']").Click()
-
-			targetName, err := page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[4]/tbody/tr/td/div/font/b").Text()
-			if err != nil {
-
+			targetTitle, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td[1]").Text();
+			if(err != nil) {
+	
 				// NOOP
-				println(err)
-			} else {
+			}else {
+	
+				targetTitle = strings.ReplaceAll(targetTitle, "（株）", "");
 
-				targetsNameList = append(targetsNameList, targetName)
+				re := regexp.MustCompile(`（.+?）`);
+
+				res := re.FindAllStringSubmatch(targetTitle, -1)[0];
+
+				for _, v := range res {
+
+					fmt.Println("対象"+strings.ReplaceAll(strings.ReplaceAll(v, "（", ""), "）", ""));
+				}
 			}
 
-			page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[6]/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/input").Fill("100")
+			if(target == "") {
 
-			page.FindByXPath("//*[@id='strPriceRadio']").Click()
+				bookBuildingPossibleString = "true";
+			}else {
 
-			page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[2]/input").Fill(os.Getenv("SBI_TORIHIKI_PASSWORD"))
+				bookBuildingPossibleString = "false";
+			}
 
-			page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[3]/input").Click()
-
-			page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr/td/form/table[7]/tbody/tr[2]/td/input[1]").Click()
-
-			page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr/td/table[5]/tbody/tr/td/a").Click()
+			fmt.Println(bookBuildingPossibleString);
 		}
 	}
-
-	c.JSON(http.StatusOK, "対象数："+strconv.Itoa(targets))
-	c.JSON(http.StatusOK, "対象："+strings.Join(targetsNameList[:], ","))
 
 	return
 }
@@ -383,6 +382,7 @@ func getSchedule(c echo.Context) (err error) {
 
 	var companyNameStringList []string
 	var bookBuildingStringList []string
+	var bookBuildingPossibleBoolList []string
 
 	for i := 1; i <= 50; i++ {
 
@@ -398,10 +398,43 @@ func getSchedule(c echo.Context) (err error) {
 
 			companyNameStringList = append(companyNameStringList, companyNameString)
 			bookBuildingStringList = append(bookBuildingStringList, bookBuildingString)
+			bookBuildingPossibleBoolList = append(bookBuildingPossibleBoolList, checkBookoBuildingPossible(bookBuildingString))
 		}
 	}
 
-	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ","))
+	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolList[:], ","))
 
 	return
+}
+
+func checkBookoBuildingPossible(bookBuildingString string) string {
+
+	bookoBuildingPossible := "false";
+
+	t := time.Now()
+
+	today := t.Format("20060102")
+
+	if(bookBuildingString != "---") {
+
+		fromMonthint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[0], "/")[0])
+		fromDayint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[0], "/")[1])
+
+		toMonthint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[1], "/")[0])
+		toDayint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[1], "/")[1])
+
+		fromDate := strconv.Itoa(t.Year())+fmt.Sprintf("%02d", fromMonthint)+fmt.Sprintf("%02d", fromDayint);
+		toDate := strconv.Itoa(t.Year())+fmt.Sprintf("%02d", toMonthint)+fmt.Sprintf("%02d", toDayint);
+
+		toDayInt, _ := strconv.Atoi(today)
+		fromDateInt, _ := strconv.Atoi(fromDate)
+		toDateInt, _ := strconv.Atoi(toDate)
+
+		if(fromDateInt <= toDayInt && toDayInt <= toDateInt) {
+
+			bookoBuildingPossible = "true";
+		}
+	}
+
+	return bookoBuildingPossible
 }
