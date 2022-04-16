@@ -21,6 +21,7 @@ class App extends React.Component {
       companyNameStringList: [],
       bookBuildingStringList: [],
       bookBuildingPossibleBoolList: [],
+      bookBuildingPossibleBoolListForMizuho: [],
 
       balance: 0
     }
@@ -72,6 +73,7 @@ class App extends React.Component {
         this.setState({companyNameStringList: response.data.split('&')[0].split(',')})
         this.setState({bookBuildingStringList: response.data.split('&')[1].split(',')})
         this.setState({bookBuildingPossibleBoolList: response.data.split('&')[2].split(',')})
+        this.setState({bookBuildingPossibleBoolListForMizuho: response.data.split('&')[3].split(',')})
       })
       .catch(console.error);
   }
@@ -175,6 +177,7 @@ class App extends React.Component {
                 <th scope="col">ブックビルディング期間</th>
                 <th scope="col">新規上場企業名</th>
                 <th scope="col">SBI</th>
+                <th scope="col">みずほ</th>
                 <th scope="col">結果</th>
               </tr>
             </thead>
@@ -184,6 +187,7 @@ class App extends React.Component {
                 <td key={this.state.bookBuildingStringList[i]}>{this.state.bookBuildingStringList[i]}</td>
                 <td key={companyName}>{companyName}</td>
                 <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i])} onClick={() => this.sbiBookBuildingSubmit()}/></td>
+                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i])} onClick={() => this.sbiBookBuildingSubmit()}/></td>
                 <td>{this.state.responseValue}</td>
               </tr>
             ))}
