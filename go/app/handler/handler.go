@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 	"regexp"
+	"log"
 
 	_ "github.com/lib/pq"
 
@@ -49,7 +50,6 @@ func Handler() {
 	e.Use(middleware.CORS())
 
 	// ルーティング
-	e.GET("/sbiBookBuilding", sbiBookBuilding)
 	e.GET("/sbiBalance", getSbiBalance)
 	e.GET("/mizuhoBalance", getMizuhoBalance)
 	e.GET("/schedule", getSchedule)
@@ -87,7 +87,7 @@ func loadEnv() {
 // 	return db
 // }
 
-func sbiBookBuilding(c echo.Context) (err error) {
+func sbiBookBuildingMap() map[string]string {
 
 	driver := agouti.ChromeDriver(
 
@@ -104,23 +104,21 @@ func sbiBookBuilding(c echo.Context) (err error) {
 	defer driver.Stop()
 	driver.Start()
 
-	fmt.Println("driver読み込み完了")
-
 	page, err := driver.NewPage()
 	if err != nil {
 
 		fmt.Fprintf(os.Stderr, "%s\n", err)
-		return
+		return nil
 	}
 
 	// 対象サイトに移動
 	page.Navigate("https://www.sbisec.co.jp/ETGate")
 
-	// ユーザーネーム
-	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+	// // ユーザーネーム
+	// page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
 
-	// パスワード
-	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	// // パスワード
+	// page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
 
 	// 「ログイン」
 	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
@@ -133,7 +131,11 @@ func sbiBookBuilding(c echo.Context) (err error) {
 
 	time.Sleep(3 * time.Second)
 
+	m := make(map[string]string)
+
 	for i := 0; i < 50; i++ {
+
+		targetCd := "";
 
 		bookBuildingPossibleString := "false";
 
@@ -157,7 +159,7 @@ func sbiBookBuilding(c echo.Context) (err error) {
 
 				for _, v := range res {
 
-					fmt.Println("対象"+strings.ReplaceAll(strings.ReplaceAll(v, "（", ""), "）", ""));
+					targetCd = strings.ReplaceAll(strings.ReplaceAll(v, "（", ""), "）", "");
 				}
 			}
 
@@ -168,12 +170,75 @@ func sbiBookBuilding(c echo.Context) (err error) {
 
 				bookBuildingPossibleString = "false";
 			}
-
-			fmt.Println(bookBuildingPossibleString);
 		}
+
+		m[targetCd] = bookBuildingPossibleString;
 	}
 
-	return
+	return m
+}
+
+func mizuhoBookBuildingMap() map[string]string {
+
+	driver := agouti.ChromeDriver(
+
+		agouti.ChromeOptions("args", []string{
+
+			"--headless",
+			"--window-size=1920,1080",
+			"--blink-settings=imagesEnabled=false",
+			"--disable-gpu",
+			"no-sandbox",
+		}),
+	)
+
+	defer driver.Stop()
+	driver.Start()
+
+	page, err := driver.NewPage()
+	if err != nil {
+
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+	}
+
+	// 対象サイトに移動
+	page.Navigate("https://netclub.mizuho-sc.com/mnc/login?rt_bn=sc_top_hd_login")
+
+	time.Sleep(3 * time.Second)
+
+	page.FindByXPath("/html/body/header[1]/div/div[1]/div/div/div[2]/ul/li[2]").Click()
+
+	page.FindByXPath("//*[@id='form01']/p/span/input").Click()
+
+	page.Navigate("https://netclub.mizuho-sc.com/mnc/tr/ipopo?6")
+
+	m := make(map[string]string)
+
+	for i := 0; i < 50; i++ {
+
+		bookBuildingPossibleString := "false";
+
+		target, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[2]/span").Text();
+		if(err != nil) {
+
+			// NOOP
+		}
+
+		bookBuildingStatus, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[1]/ul/li").Text();
+		if(err != nil) {
+
+			// NOOP
+		}
+
+		if strings.EqualFold(bookBuildingStatus, "申込") {
+
+			bookBuildingPossibleString = "true"
+		}
+
+		m[target] = bookBuildingPossibleString;
+	}
+
+	return m
 }
 
 func getSbiBalance(c echo.Context) (err error) {
@@ -346,12 +411,17 @@ func getMizuhoBalance(c echo.Context) (err error) {
 
 func getSchedule(c echo.Context) (err error) {
 
+	log.Println("getSchedule")
+
+	sbiBookBuildingMap := sbiBookBuildingMap()
+	mizuhoBookBuildingMap := mizuhoBookBuildingMap()
+
 	driver := agouti.ChromeDriver(
 
 		agouti.ChromeOptions("args", []string{
 
 			"--headless",
-			"--window-size=300,1200",
+			"--window-size=1920,1080",
 			"--blink-settings=imagesEnabled=false",
 			"--disable-gpu",
 			"no-sandbox",
@@ -361,35 +431,39 @@ func getSchedule(c echo.Context) (err error) {
 	defer driver.Stop()
 	driver.Start()
 
-	fmt.Println("driver読み込み完了")
-
 	page, err := driver.NewPage()
 	if err != nil {
 
 		fmt.Fprintf(os.Stderr, "%s\n", err)
-		return
 	}
 
 	page.Navigate("https://www.nikkei.com/markets/kigyo/ipo/money-schedule/")
 
 	xpathStringForBookBuildingSpan := ""
 	xpathStringForCompanyNameSpan := ""
+	xpathStringForTargetCd := ""
 
 	bookBuildingString := ""
 	companyNameString := ""
-
-	// m := make(map[string]string)
+	targetCdString := ""
 
 	var companyNameStringList []string
+	var targetCdStringList []string
 	var bookBuildingStringList []string
-	var bookBuildingPossibleBoolList []string
+	var bookBuildingPossibleBoolListForSbi []string
+	var bookBuildingPossibleBoolListForMizuho []string
 
 	for i := 1; i <= 50; i++ {
 
+		bookBuildingPossibleBoolStringForSbi := "false"
+		bookBuildingPossibleBoolStringForMizuho := "false"
+
 		xpathStringForCompanyNameSpan = fmt.Sprintf("/html/body/div[8]/div/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/table/tbody[1]/tr[%d]/td[2]", i)
 		xpathStringForBookBuildingSpan = fmt.Sprintf("/html/body/div[8]/div/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/table/tbody[1]/tr[%d]/td[3]", i)
+		xpathStringForTargetCd = fmt.Sprintf("/html/body/div[8]/div/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/table/tbody[1]/tr[%d]/td[1]/a", i)
 
 		companyNameString, _ = page.FindByXPath(xpathStringForCompanyNameSpan).Text()
+		targetCdString, _ = page.FindByXPath(xpathStringForTargetCd).Text()
 		bookBuildingString, err = page.FindByXPath(xpathStringForBookBuildingSpan).Text()
 		if err != nil {
 
@@ -397,12 +471,27 @@ func getSchedule(c echo.Context) (err error) {
 		} else {
 
 			companyNameStringList = append(companyNameStringList, companyNameString)
+			targetCdStringList = append(targetCdStringList, targetCdString)
 			bookBuildingStringList = append(bookBuildingStringList, bookBuildingString)
-			bookBuildingPossibleBoolList = append(bookBuildingPossibleBoolList, checkBookoBuildingPossible(bookBuildingString))
+
+			if strings.EqualFold(sbiBookBuildingMap[targetCdString], "true") && strings.EqualFold(checkBookoBuildingPossible(bookBuildingString), "true") {
+
+				bookBuildingPossibleBoolStringForSbi = "true;"
+			}
+
+			bookBuildingPossibleBoolListForSbi = append(bookBuildingPossibleBoolListForSbi, bookBuildingPossibleBoolStringForSbi)
+
+
+			if strings.EqualFold(mizuhoBookBuildingMap[targetCdString], "true") && strings.EqualFold(checkBookoBuildingPossible(bookBuildingString), "true") {
+
+				bookBuildingPossibleBoolStringForMizuho = "true;"
+			}
+
+			bookBuildingPossibleBoolListForMizuho = append(bookBuildingPossibleBoolListForMizuho, bookBuildingPossibleBoolStringForMizuho)
 		}
 	}
 
-	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolList[:], ","))
+	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForSbi[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForMizuho[:], ","))
 
 	return
 }
