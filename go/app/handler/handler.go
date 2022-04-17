@@ -53,6 +53,7 @@ func Handler() {
 	e.GET("/sbiBalance", getSbiBalance)
 	e.GET("/mizuhoBalance", getMizuhoBalance)
 	e.GET("/schedule", getSchedule)
+	e.GET("/mizuhoBookBuilding/:tickerSymbol", mizuhoBookBuilding)
 
 	// local サーバー
 	e.Logger.Fatal(e.Start(":8000"))
@@ -491,7 +492,7 @@ func getSchedule(c echo.Context) (err error) {
 		}
 	}
 
-	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForSbi[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForMizuho[:], ","))
+	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForSbi[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForMizuho[:], ",")+"&"+strings.Join(targetCdStringList[:], ","))
 
 	return
 }
@@ -526,4 +527,110 @@ func checkBookoBuildingPossible(bookBuildingString string) string {
 	}
 
 	return bookoBuildingPossible
+}
+
+
+func mizuhoBookBuilding(c echo.Context) (err error) {
+
+	log.Printf("mizuhoBookBuilding")
+
+	driver := agouti.ChromeDriver(
+
+		agouti.ChromeOptions("args", []string{
+
+			"--headless",
+			"--window-size=1980,1200",
+			"--blink-settings=imagesEnabled=false",
+			"--disable-gpu",
+			"no-sandbox",
+		}),
+	)
+
+	defer driver.Stop()
+	driver.Start()
+
+	page, err := driver.NewPage()
+	if err != nil {
+
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		return
+	}
+
+	// 対象サイトに移動
+	page.Navigate("https://netclub.mizuho-sc.com/mnc/login?rt_bn=sc_top_hd_login")
+
+	time.Sleep(3 * time.Second)
+
+	page.FindByXPath("/html/body/header[1]/div/div[1]/div/div/div[2]/ul/li[2]").Click()
+
+	page.FindByXPath("//*[@id='form01']/p/span/input").Click()
+
+	page.Navigate("https://netclub.mizuho-sc.com/mnc/tr/ipopo?6")
+
+	m := make(map[string]string)
+
+	for i := 0; i < 50; i++ {
+
+		target, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[2]/span").Text();
+		if(err != nil) {
+
+			// NOOP
+		}
+
+		targetXpathString := "/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[1]/ul/li/a";
+
+		m[target] = targetXpathString;
+	}
+
+	tickerSymbol := c.Param("tickerSymbol")
+
+	log.Printf(tickerSymbol)
+
+	page.FindByXPath(m[tickerSymbol]).Click()
+	
+	time.Sleep(3 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[2]/div[1]/div/p/input").Click()
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/form/div/p/input[1]").Click()
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span/form/div/p/input").Click()
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span[1]/span[2]/span[1]/p/span").Click()
+	
+	time.Sleep(5 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span[1]/span[2]/span[2]/p/span").Click()
+
+	time.Sleep(5 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span[1]/span[2]/span[3]/p/span").Click()
+
+	time.Sleep(5 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span[1]/form/div[2]/p/input").Click()
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[3]/div[1]/form/table/tbody/tr[4]/td/div/table/tbody/tr[1]/td[2]/span/img").Click()
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[3]/div[1]/form/table/tbody/tr[5]/td/table/tbody/tr/td[1]/span/input[1]").Click()
+
+	time.Sleep(5 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[3]/div[1]/form/div[3]/p/input").Click()
+
+	time.Sleep(5 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[3]/div[1]/form/table/tbody/tr[8]/td/input").Fill("2137")
+
+	time.Sleep(5 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[3]/div[1]/form/div[3]/ul/li/div[1]/span/input").Click()
+
+	time.Sleep(5 * time.Second)
+
+	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[3]/div[1]/form/div[5]/p/input").Click()
+	
+	resultString, _ := page.Title()
+
+	return c.JSON(http.StatusOK, resultString)
 }
