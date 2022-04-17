@@ -22,9 +22,13 @@ class App extends React.Component {
       bookBuildingStringList: [],
       bookBuildingPossibleBoolList: [],
       bookBuildingPossibleBoolListForMizuho: [],
+      targetCdStringList: [],
+      responseValueForMizuhoBookBuilding: "",
 
       balance: 0
     }
+
+    // this.schedule();
   }
 
   divHundling = prop => {
@@ -74,6 +78,7 @@ class App extends React.Component {
         this.setState({bookBuildingStringList: response.data.split('&')[1].split(',')})
         this.setState({bookBuildingPossibleBoolList: response.data.split('&')[2].split(',')})
         this.setState({bookBuildingPossibleBoolListForMizuho: response.data.split('&')[3].split(',')})
+        this.setState({targetCdStringList: response.data.split('&')[4].split(',')})
       })
       .catch(console.error);
   }
@@ -101,6 +106,16 @@ class App extends React.Component {
       .then((response) => {
 
         this.setState({responseValue: response.data})
+      })
+      .catch(console.error);
+  }
+
+  mizuhoBookBuildingSubmit = (tickerSymbol) => {
+
+    axios.get('/api/mizuhoBookBuilding/' + tickerSymbol)
+      .then((response) => {
+
+        this.setState({responseValueForMizuhoBookBuilding: response.data})
       })
       .catch(console.error);
   }
@@ -169,12 +184,12 @@ class App extends React.Component {
 
           {/* div2 */}
           <div className="contentDiv p-3" style={{display: this.state.selectedDiv == 2? '' : 'none'}}>
-          <input type="button" value="スケジュールの取得" className="m-3" onClick={() => this.schedule()} />
           <p>{this.state.scheduleListString}</p>
-          <table className="table">
+          <table className="table" style={{display: this.state.companyNameStringList.length != 0? '' : 'none'}}>
             <thead>
               <tr>
                 <th scope="col">ブックビルディング期間</th>
+                <th scope="col">証券コード</th>
                 <th scope="col">新規上場企業名</th>
                 <th scope="col">SBI</th>
                 <th scope="col">みずほ</th>
@@ -185,14 +200,19 @@ class App extends React.Component {
             {this.state.companyNameStringList.map((companyName, i) => (
               <tr>
                 <td key={this.state.bookBuildingStringList[i]}>{this.state.bookBuildingStringList[i]}</td>
+                <td key={this.state.targetCdStringList[i]}>{this.state.targetCdStringList[i]}</td>
                 <td key={companyName}>{companyName}</td>
                 <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i])} onClick={() => this.sbiBookBuildingSubmit()}/></td>
-                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i])} onClick={() => this.sbiBookBuildingSubmit()}/></td>
-                <td>{this.state.responseValue}</td>
+                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i])} onClick={() => this.mizuhoBookBuildingSubmit(this.state.targetCdStringList[i])}/></td>
+                <td>{this.state.responseValueForMizuhoBookBuilding}</td>
               </tr>
             ))}
             </tbody>
           </table>
+          <button class="btn btn-primary" type="button" disabled style={{display: this.state.companyNameStringList.length != 0? 'none' : ''}}>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            &nbsp;&nbsp;Loading...
+          </button>
           </div>
 
           {/* div3 */}
