@@ -2,16 +2,17 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
-	"regexp"
-	"log"
 
 	_ "github.com/lib/pq"
 
+	"github.com/Shinya0714/manamana/go/app/general"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -27,6 +28,8 @@ type Owner struct {
 }
 
 func Handler() {
+
+	general.General()
 
 	loadEnv()
 
@@ -136,44 +139,44 @@ func sbiBookBuildingMap() map[string]string {
 
 	for i := 0; i < 50; i++ {
 
-		targetCd := "";
+		targetCd := ""
 
-		bookBuildingPossibleString := "false";
+		bookBuildingPossibleString := "false"
 
-		target, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[2]/td[5]").Text();
-		if(err != nil) {
+		target, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[2]/td[5]").Text()
+		if err != nil {
 
 			// NOOP
-		}else {
+		} else {
 
-			targetTitle, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td[1]").Text();
-			if(err != nil) {
-	
+			targetTitle, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td[1]").Text()
+			if err != nil {
+
 				// NOOP
-			}else {
-	
-				targetTitle = strings.ReplaceAll(targetTitle, "（株）", "");
+			} else {
 
-				re := regexp.MustCompile(`（.+?）`);
+				targetTitle = strings.ReplaceAll(targetTitle, "（株）", "")
 
-				res := re.FindAllStringSubmatch(targetTitle, -1)[0];
+				re := regexp.MustCompile(`（.+?）`)
+
+				res := re.FindAllStringSubmatch(targetTitle, -1)[0]
 
 				for _, v := range res {
 
-					targetCd = strings.ReplaceAll(strings.ReplaceAll(v, "（", ""), "）", "");
+					targetCd = strings.ReplaceAll(strings.ReplaceAll(v, "（", ""), "）", "")
 				}
 			}
 
-			if(target == "") {
+			if target == "" {
 
-				bookBuildingPossibleString = "true";
-			}else {
+				bookBuildingPossibleString = "true"
+			} else {
 
-				bookBuildingPossibleString = "false";
+				bookBuildingPossibleString = "false"
 			}
 		}
 
-		m[targetCd] = bookBuildingPossibleString;
+		m[targetCd] = bookBuildingPossibleString
 	}
 
 	return m
@@ -209,6 +212,10 @@ func mizuhoBookBuildingMap() map[string]string {
 
 	page.FindByXPath("/html/body/header[1]/div/div[1]/div/div/div[2]/ul/li[2]").Click()
 
+	page.FindByXPath("//*[@id='IDInputKB']").Fill("3747563")
+
+	page.FindByXPath("//*[@id='PWInputKB']").Fill("kimitunagi5emu")
+
 	page.FindByXPath("//*[@id='form01']/p/span/input").Click()
 
 	page.Navigate("https://netclub.mizuho-sc.com/mnc/tr/ipopo?6")
@@ -217,16 +224,16 @@ func mizuhoBookBuildingMap() map[string]string {
 
 	for i := 0; i < 50; i++ {
 
-		bookBuildingPossibleString := "false";
+		bookBuildingPossibleString := "false"
 
-		target, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[2]/span").Text();
-		if(err != nil) {
+		target, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[2]/span").Text()
+		if err != nil {
 
 			// NOOP
 		}
 
-		bookBuildingStatus, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[1]/ul/li").Text();
-		if(err != nil) {
+		bookBuildingStatus, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[1]/ul/li").Text()
+		if err != nil {
 
 			// NOOP
 		}
@@ -236,7 +243,7 @@ func mizuhoBookBuildingMap() map[string]string {
 			bookBuildingPossibleString = "true"
 		}
 
-		m[target] = bookBuildingPossibleString;
+		m[target] = bookBuildingPossibleString
 	}
 
 	return m
@@ -482,7 +489,6 @@ func getSchedule(c echo.Context) (err error) {
 
 			bookBuildingPossibleBoolListForSbi = append(bookBuildingPossibleBoolListForSbi, bookBuildingPossibleBoolStringForSbi)
 
-
 			if strings.EqualFold(mizuhoBookBuildingMap[targetCdString], "true") && strings.EqualFold(checkBookoBuildingPossible(bookBuildingString), "true") {
 
 				bookBuildingPossibleBoolStringForMizuho = "true;"
@@ -499,13 +505,13 @@ func getSchedule(c echo.Context) (err error) {
 
 func checkBookoBuildingPossible(bookBuildingString string) string {
 
-	bookoBuildingPossible := "false";
+	bookoBuildingPossible := "false"
 
 	t := time.Now()
 
 	today := t.Format("20060102")
 
-	if(bookBuildingString != "---") {
+	if bookBuildingString != "---" {
 
 		fromMonthint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[0], "/")[0])
 		fromDayint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[0], "/")[1])
@@ -513,22 +519,21 @@ func checkBookoBuildingPossible(bookBuildingString string) string {
 		toMonthint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[1], "/")[0])
 		toDayint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[1], "/")[1])
 
-		fromDate := strconv.Itoa(t.Year())+fmt.Sprintf("%02d", fromMonthint)+fmt.Sprintf("%02d", fromDayint);
-		toDate := strconv.Itoa(t.Year())+fmt.Sprintf("%02d", toMonthint)+fmt.Sprintf("%02d", toDayint);
+		fromDate := strconv.Itoa(t.Year()) + fmt.Sprintf("%02d", fromMonthint) + fmt.Sprintf("%02d", fromDayint)
+		toDate := strconv.Itoa(t.Year()) + fmt.Sprintf("%02d", toMonthint) + fmt.Sprintf("%02d", toDayint)
 
 		toDayInt, _ := strconv.Atoi(today)
 		fromDateInt, _ := strconv.Atoi(fromDate)
 		toDateInt, _ := strconv.Atoi(toDate)
 
-		if(fromDateInt <= toDayInt && toDayInt <= toDateInt) {
+		if fromDateInt <= toDayInt && toDayInt <= toDateInt {
 
-			bookoBuildingPossible = "true";
+			bookoBuildingPossible = "true"
 		}
 	}
 
 	return bookoBuildingPossible
 }
-
 
 func mizuhoBookBuilding(c echo.Context) (err error) {
 
@@ -571,15 +576,15 @@ func mizuhoBookBuilding(c echo.Context) (err error) {
 
 	for i := 0; i < 50; i++ {
 
-		target, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[2]/span").Text();
-		if(err != nil) {
+		target, err := page.AllByXPath("/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[2]/span").Text()
+		if err != nil {
 
 			// NOOP
 		}
 
-		targetXpathString := "/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[1]/ul/li/a";
+		targetXpathString := "/html/body/div[2]/div[4]/div[2]/span[2]/span/table/tbody/tr[" + strconv.Itoa(i) + "]/td[1]/ul/li/a"
 
-		m[target] = targetXpathString;
+		m[target] = targetXpathString
 	}
 
 	tickerSymbol := c.Param("tickerSymbol")
@@ -587,7 +592,7 @@ func mizuhoBookBuilding(c echo.Context) (err error) {
 	log.Printf(tickerSymbol)
 
 	page.FindByXPath(m[tickerSymbol]).Click()
-	
+
 	time.Sleep(3 * time.Second)
 
 	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[2]/div[1]/div/p/input").Click()
@@ -597,7 +602,7 @@ func mizuhoBookBuilding(c echo.Context) (err error) {
 	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span/form/div/p/input").Click()
 
 	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span[1]/span[2]/span[1]/p/span").Click()
-	
+
 	time.Sleep(5 * time.Second)
 
 	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/span[1]/span[2]/span[2]/p/span").Click()
@@ -629,7 +634,7 @@ func mizuhoBookBuilding(c echo.Context) (err error) {
 	time.Sleep(5 * time.Second)
 
 	page.FindByXPath("/html/body/div[2]/div[4]/div[2]/div[3]/div[1]/form/div[5]/p/input").Click()
-	
+
 	resultString, _ := page.Title()
 
 	return c.JSON(http.StatusOK, resultString)
