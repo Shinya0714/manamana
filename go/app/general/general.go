@@ -6,5 +6,5 @@ import (
 
 func General() {
 
-	fmt.Println("test")
+	fmt.Printf("from general.go")
 }
