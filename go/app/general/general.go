@@ -1,11 +1,17 @@
 package general
 
 import (
-
 	"fmt"
 )
 
+func General() {
+
+	test()
+
+	return
+}
+
 func test() {
 
-	fmt.Println("func from general.go");
+	fmt.Println("test")
 }
