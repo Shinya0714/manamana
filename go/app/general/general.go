@@ -6,12 +6,5 @@ import (
 
 func General() {
 
-	test()
-
-	return
-}
-
-func test() {
-
 	fmt.Println("test")
 }
