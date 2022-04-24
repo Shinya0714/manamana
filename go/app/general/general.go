@@ -36,5 +36,7 @@ func CheckBookoBuildingPossible(bookBuildingString string) string {
 		}
 	}
 
+	fmt.Printf("generalを更新出来てるかテスト")
+
 	return bookoBuildingPossible
 }
