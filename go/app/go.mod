@@ -2,26 +2,20 @@ module github.com/Shinya0714/manamana/go/app/main
 
 go 1.17
 
-require github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220312062646-323df25917f8
+require github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220424053513-5b0014657de1
 
 require (
-	github.com/cosmtrek/air v1.29.0 // indirect
-	github.com/fatih/color v1.13.0 // indirect
+	github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424054855-f1dd601a513e // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
-	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
-	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
-	github.com/labstack/echo/v4 v4.7.0 // indirect
+	github.com/labstack/echo/v4 v4.7.2 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
-	github.com/lib/pq v1.10.4 // indirect
+	github.com/lib/pq v1.10.5 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/onsi/ginkgo v1.16.5 // indirect
-	github.com/onsi/gomega v1.19.0 // indirect
-	github.com/pelletier/go-toml v1.9.4 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
+	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/sclevine/agouti v3.0.0+incompatible // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
@@ -30,4 +24,5 @@ require (
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
