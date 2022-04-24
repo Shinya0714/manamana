@@ -10,10 +10,11 @@ import (
 	"strings"
 	"time"
 
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/lib/pq"
 
 	"github.com/Shinya0714/manamana/go/app/general"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -28,8 +29,6 @@ type Owner struct {
 }
 
 func Handler() {
-
-	general.General()
 
 	loadEnv()
 
@@ -482,14 +481,14 @@ func getSchedule(c echo.Context) (err error) {
 			targetCdStringList = append(targetCdStringList, targetCdString)
 			bookBuildingStringList = append(bookBuildingStringList, bookBuildingString)
 
-			if strings.EqualFold(sbiBookBuildingMap[targetCdString], "true") && strings.EqualFold(checkBookoBuildingPossible(bookBuildingString), "true") {
+			if strings.EqualFold(sbiBookBuildingMap[targetCdString], "true") && strings.EqualFold(general.CheckBookoBuildingPossible(bookBuildingString), "true") {
 
 				bookBuildingPossibleBoolStringForSbi = "true;"
 			}
 
 			bookBuildingPossibleBoolListForSbi = append(bookBuildingPossibleBoolListForSbi, bookBuildingPossibleBoolStringForSbi)
 
-			if strings.EqualFold(mizuhoBookBuildingMap[targetCdString], "true") && strings.EqualFold(checkBookoBuildingPossible(bookBuildingString), "true") {
+			if strings.EqualFold(mizuhoBookBuildingMap[targetCdString], "true") && strings.EqualFold(general.CheckBookoBuildingPossible(bookBuildingString), "true") {
 
 				bookBuildingPossibleBoolStringForMizuho = "true;"
 			}
@@ -501,38 +500,6 @@ func getSchedule(c echo.Context) (err error) {
 	c.JSON(http.StatusOK, strings.Join(companyNameStringList[:], ",")+"&"+strings.Join(bookBuildingStringList[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForSbi[:], ",")+"&"+strings.Join(bookBuildingPossibleBoolListForMizuho[:], ",")+"&"+strings.Join(targetCdStringList[:], ","))
 
 	return
-}
-
-func checkBookoBuildingPossible(bookBuildingString string) string {
-
-	bookoBuildingPossible := "false"
-
-	t := time.Now()
-
-	today := t.Format("20060102")
-
-	if bookBuildingString != "---" {
-
-		fromMonthint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[0], "/")[0])
-		fromDayint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[0], "/")[1])
-
-		toMonthint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[1], "/")[0])
-		toDayint, _ := strconv.Atoi(strings.Split(strings.Split(bookBuildingString, "-")[1], "/")[1])
-
-		fromDate := strconv.Itoa(t.Year()) + fmt.Sprintf("%02d", fromMonthint) + fmt.Sprintf("%02d", fromDayint)
-		toDate := strconv.Itoa(t.Year()) + fmt.Sprintf("%02d", toMonthint) + fmt.Sprintf("%02d", toDayint)
-
-		toDayInt, _ := strconv.Atoi(today)
-		fromDateInt, _ := strconv.Atoi(fromDate)
-		toDateInt, _ := strconv.Atoi(toDate)
-
-		if fromDateInt <= toDayInt && toDayInt <= toDateInt {
-
-			bookoBuildingPossible = "true"
-		}
-	}
-
-	return bookoBuildingPossible
 }
 
 func mizuhoBookBuilding(c echo.Context) (err error) {
