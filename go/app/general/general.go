@@ -6,5 +6,5 @@ import (
 
 func General() {
 
-	fmt.Printf("from general.go")
+	fmt.Printf("from general.go update")
 }
