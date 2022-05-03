@@ -28,7 +28,7 @@ class App extends React.Component {
       balance: 0
     }
 
-    // this.schedule();
+    this.schedule();
   }
 
   divHundling = prop => {

@@ -427,7 +427,6 @@ func getSchedule(c echo.Context) (err error) {
 
 		agouti.ChromeOptions("args", []string{
 
-			"--headless",
 			"--window-size=1920,1080",
 			"--blink-settings=imagesEnabled=false",
 			"--disable-gpu",
