@@ -23,12 +23,13 @@ class App extends React.Component {
       bookBuildingPossibleBoolList: [],
       bookBuildingPossibleBoolListForMizuho: [],
       targetCdStringList: [],
+      responseValueForSbiBookBuilding: "",
       responseValueForMizuhoBookBuilding: "",
 
       balance: 0
     }
 
-    this.schedule();
+    // this.schedule();
   }
 
   divHundling = prop => {
@@ -100,24 +101,38 @@ class App extends React.Component {
       .catch(console.error);
   }
 
-  sbiBookBuildingSubmit = () => {
+  sbiBookBuildingSubmit = (tickerSymbol, companyName) => {
 
-    axios.get('/api/sbiBookBuilding')
+    var result = window.confirm('【対象】\r\n' + '（' + tickerSymbol + '）' + companyName + '\r\n\r\n実行してもよろしいですか？');
+  
+    if(result) {
+
+      axios.get('/api/sbiBookBuilding/' + tickerSymbol)
       .then((response) => {
 
-        this.setState({responseValue: response.data})
+        this.setState({responseValueForSbiBookBuilding: response.data})
+
+        this.schedule();
       })
       .catch(console.error);
+    }
   }
 
-  mizuhoBookBuildingSubmit = (tickerSymbol) => {
+  mizuhoBookBuildingSubmit = (tickerSymbol, companyName) => {
 
-    axios.get('/api/mizuhoBookBuilding/' + tickerSymbol)
+    var result = window.confirm('【対象】\r\n' + '（' + tickerSymbol + '）' + companyName + '\r\n\r\n実行してもよろしいですか？');
+  
+    if(result) {
+
+      axios.get('/api/mizuhoBookBuilding/' + tickerSymbol)
       .then((response) => {
 
         this.setState({responseValueForMizuhoBookBuilding: response.data})
+
+        this.schedule();
       })
       .catch(console.error);
+    }
   }
 
   checkBookoBuildingPossible(target) {
@@ -157,7 +172,6 @@ class App extends React.Component {
             <a className={'divBorder nav-item nav-link ' + this.state.nav2Class} href="#" onClick={() => this.divHundling(2)}>申し込み</a>
             <a className={'divBorder nav-item nav-link ' + this.state.nav3Class} href="#" onClick={() => this.divHundling(3)}>設定</a>
           </nav>
-
           {/* div1 */}
           <div className="contentDiv p-3" style={{display: this.state.selectedDiv == 1? '' : 'none'}}>
             <input type="button" value="最新の情報に更新" className="m-3" onClick={() => this.getBalance()} />
@@ -166,7 +180,7 @@ class App extends React.Component {
             <thead>
               <tr>
                 <th scope="col"></th>
-                <th scope="col">買い付け余力</th>
+                <th scope="col" onClick={() => this.test()}>買い付け余力</th>
               </tr>
             </thead>
             <tbody>
@@ -202,7 +216,7 @@ class App extends React.Component {
                 <td key={this.state.bookBuildingStringList[i]}>{this.state.bookBuildingStringList[i]}</td>
                 <td key={this.state.targetCdStringList[i]}>{this.state.targetCdStringList[i]}</td>
                 <td key={companyName}>{companyName}</td>
-                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i])} onClick={() => this.sbiBookBuildingSubmit()}/></td>
+                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i])} onClick={() => this.sbiBookBuildingSubmit(this.state.targetCdStringList[i])}/></td>
                 <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i])} onClick={() => this.mizuhoBookBuildingSubmit(this.state.targetCdStringList[i])}/></td>
                 <td>{this.state.responseValueForMizuhoBookBuilding}</td>
               </tr>
