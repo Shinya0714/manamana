@@ -19,6 +19,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sclevine/agouti"
+	"golang.org/x/net/websocket"
 )
 
 type Owner struct {
@@ -55,7 +56,9 @@ func Handler() {
 	e.GET("/sbiBalance", getSbiBalance)
 	e.GET("/mizuhoBalance", getMizuhoBalance)
 	e.GET("/schedule", getSchedule)
+	e.GET("/sbiBookBuilding/:tickerSymbol", sbiBookBuilding)
 	e.GET("/mizuhoBookBuilding/:tickerSymbol", mizuhoBookBuilding)
+	e.GET("/ws", msgHandler)
 
 	// local サーバー
 	e.Logger.Fatal(e.Start(":8000"))
@@ -211,10 +214,6 @@ func mizuhoBookBuildingMap() map[string]string {
 
 	page.FindByXPath("/html/body/header[1]/div/div[1]/div/div/div[2]/ul/li[2]").Click()
 
-	page.FindByXPath("//*[@id='IDInputKB']").Fill("3747563")
-
-	page.FindByXPath("//*[@id='PWInputKB']").Fill("kimitunagi5emu")
-
 	page.FindByXPath("//*[@id='form01']/p/span/input").Click()
 
 	page.Navigate("https://netclub.mizuho-sc.com/mnc/tr/ipopo?6")
@@ -277,14 +276,14 @@ func getSbiBalance(c echo.Context) (err error) {
 	// 対象サイトに移動
 	page.Navigate("https://www.sbisec.co.jp/ETGate")
 
-	// ユーザーネーム
-	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+	// // ユーザーネーム
+	// page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
 
-	// パスワード
-	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	// // パスワード
+	// page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
 
 	// 「ログイン」
-	page.FindByXPath("//*[@id='SUBAREA01']/form/div/div/div/p[2]/a/input").Click()
+	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
 
 	time.Sleep(3 * time.Second)
 
@@ -297,15 +296,8 @@ func getSbiBalance(c echo.Context) (err error) {
 
 		fmt.Printf("err: %v\n", err)
 	}
-	time.Sleep(3 * time.Second)
 
-	kaitsukeKano3daysAfter, err := page.FindByXPath("/html/body/div[1]/table/tbody/tr/td[1]/table/tbody/tr[2]/td/table[1]/tbody/tr/td/form/table[2]/tbody/tr[1]/td[2]/table[4]/tbody/tr/td[1]/table[2]/tbody/tr[4]/td[2]/div").Text()
-	if err != nil {
-
-		fmt.Printf("err: %v\n", err)
-	}
-	c.JSON(http.StatusOK, "買付余力(2営業日後)"+kaitsukeKano2daysAfter)
-	c.JSON(http.StatusOK, "買付余力(3営業日後)"+kaitsukeKano3daysAfter)
+	c.JSON(http.StatusOK, kaitsukeKano2daysAfter)
 
 	return
 }
@@ -397,9 +389,9 @@ func getMizuhoBalance(c echo.Context) (err error) {
 
 	page.FindByXPath("/html/body/header[1]/div/div[1]/div/div/div[2]/ul/li[2]").Click()
 
-	page.FindByXPath("//*[@id='IDInputKB']").Fill(os.Getenv("MIZUHO_ID"))
+	// page.FindByXPath("//*[@id='IDInputKB']").Fill(os.Getenv("MIZUHO_ID"))
 
-	page.FindByXPath("//*[@id='PWInputKB']").Fill(os.Getenv("MIZUHO_PASSWORD"))
+	// page.FindByXPath("//*[@id='PWInputKB']").Fill(os.Getenv("MIZUHO_PASSWORD"))
 
 	page.FindByXPath("//*[@id='form01']/p/span/input").Click()
 
@@ -411,7 +403,7 @@ func getMizuhoBalance(c echo.Context) (err error) {
 		fmt.Printf("err: %v\n", err)
 	}
 
-	c.JSON(http.StatusOK, "買付余力"+zandaka)
+	c.JSON(http.StatusOK, zandaka)
 
 	return
 }
@@ -427,6 +419,7 @@ func getSchedule(c echo.Context) (err error) {
 
 		agouti.ChromeOptions("args", []string{
 
+			"--headless",
 			"--window-size=1920,1080",
 			"--blink-settings=imagesEnabled=false",
 			"--disable-gpu",
@@ -604,4 +597,149 @@ func mizuhoBookBuilding(c echo.Context) (err error) {
 	resultString, _ := page.Title()
 
 	return c.JSON(http.StatusOK, resultString)
+}
+
+func sbiBookBuilding(c echo.Context) (err error) {
+
+	log.Printf("sbiBookBuilding")
+
+	driver := agouti.ChromeDriver(
+
+		agouti.ChromeOptions("args", []string{
+
+			"--headless",
+			"--window-size=1980,1200",
+			"--blink-settings=imagesEnabled=false",
+			"--disable-gpu",
+			"no-sandbox",
+		}),
+	)
+
+	defer driver.Stop()
+	driver.Start()
+
+	page, err := driver.NewPage()
+	if err != nil {
+
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		return
+	}
+
+	// 対象サイトに移動
+	page.Navigate("https://www.sbisec.co.jp/ETGate")
+
+	// // ユーザーネーム
+	// page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+
+	// // パスワード
+	// page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+
+	// 「ログイン」
+	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
+
+	// 「ブックビルディング情報」
+	page.Navigate("https://site2.sbisec.co.jp/ETGate/?OutSide=on&_ControlID=WPLETmgR001Control&_DataStoreID=DSWPLETmgR001Control&burl=search_domestic&dir=ipo%2F&file=stock_info_ipo.html&cat1=domestic&cat2=ipo&getFlg=on&int_pr1=150313_cmn_gnavi:6_dmenu_04")
+
+	// 「新規上場株式ブックビルディング／購入意思表示」
+	page.FindByXPath("/html/body/div[4]/div/table/tbody/tr/td[1]/div/div[10]/div/div/a/img").Click()
+
+	time.Sleep(3 * time.Second)
+
+	m := make(map[string]string)
+
+	for i := 0; i < 50; i++ {
+
+		targetCd := ""
+
+		targetXpathTableString := "false"
+
+		target, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[2]/td[5]").Text()
+		if err != nil {
+
+			// NOOP
+		} else {
+
+			targetTitle, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td[1]").Text()
+			if err != nil {
+
+				// NOOP
+			} else {
+
+				targetTitle = strings.ReplaceAll(targetTitle, "（株）", "")
+
+				re := regexp.MustCompile(`（.+?）`)
+
+				res := re.FindAllStringSubmatch(targetTitle, -1)[0]
+
+				for _, v := range res {
+
+					targetCd = strings.ReplaceAll(strings.ReplaceAll(v, "（", ""), "）", "")
+				}
+			}
+
+			if target == "" {
+
+				targetXpathTableString = strconv.Itoa(i)
+			} else {
+
+				targetXpathTableString = "false"
+			}
+		}
+
+		m[targetCd] = targetXpathTableString
+	}
+
+	tickerSymbol := c.Param("tickerSymbol")
+
+	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + m[tickerSymbol] + "]/tbody/tr/td/table/tbody/tr[2]/td[5]/a/img").Click()
+
+	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[6]/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/input").Fill("100")
+
+	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[6]/tbody/tr/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td[1]/input").Click()
+
+	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[2]/input").Fill("NFXQCBUM")
+
+	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[3]/input").Click()
+
+	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr/td/form/table[7]/tbody/tr[2]/td/input[1]").Click()
+
+	resultString, _ := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr/td/table[3]/tbody/tr[1]/td").Text()
+
+	fmt.Println(resultString)
+
+	return c.JSON(http.StatusOK, resultString)
+}
+
+func msgHandler(c echo.Context) (err error) {
+
+	fmt.Printf("msgHandler通ってる")
+
+	websocket.Handler(func(ws *websocket.Conn) {
+
+		defer ws.Close()
+
+		// 初回のメッセージを送信
+		err := websocket.Message.Send(ws, "Server: Hello, Client!")
+		if err != nil {
+			c.Logger().Error(err)
+		}
+
+		time.Sleep(5 * time.Second)
+
+		// 初回のメッセージを送信
+		err2 := websocket.Message.Send(ws, "Server: Hello, Client2!")
+		if err2 != nil {
+			c.Logger().Error(err2)
+		}
+
+		time.Sleep(5 * time.Second)
+
+		// 初回のメッセージを送信
+		err3 := websocket.Message.Send(ws, "Server: Hello, Client3!")
+		if err3 != nil {
+			c.Logger().Error(err3)
+		}
+	}).ServeHTTP(c.Response(), c.Request())
+
+	return nil
 }
