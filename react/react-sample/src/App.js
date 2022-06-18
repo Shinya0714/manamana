@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import imgLogo from './images/logo.png';
+import kikanGai from './images/kikanGai.png';
+import kanryo from './images/kanryo.png';
 import './css/style.css'
 
 class App extends React.Component {
@@ -30,15 +32,15 @@ class App extends React.Component {
     this.schedule();
   }
 
-  getOwner = () => {
+  // getOwner = () => {
 
-    axios.get('/owner')
-      .then((response) => {
+  //   axios.get('/owner')
+  //     .then((response) => {
 
-        this.setState({balance: response.data})
-      })
-      .catch(console.error);
-  }
+  //       this.setState({balance: response.data})
+  //     })
+  //     .catch(console.error);
+  // }
 
   schedule = () => {
 
@@ -107,14 +109,22 @@ class App extends React.Component {
 
   checkBookoBuildingPossible(target) {
 
-    var boolean = false;
+    console.log(target)
 
-    if(target == 'false') {
+    var result = 'false';
 
-      boolean = true;
+    if(target == 'true') {
+
+      result = 'true';
+    }else if(target == 'kikanGai') {
+
+      result = 'kikanGai';
+    }else if(target == 'kanryo') {
+
+      result = 'kanryo';
     }
 
-    return boolean;
+    return result;
   }
 
   returnFullDate(year, month ,day) {
@@ -139,7 +149,7 @@ class App extends React.Component {
           <table className="table" style={{display: this.state.companyNameStringList.length != 0? '' : 'none'}}>
             <thead>
               <tr>
-                <th scope="col"></th>
+                <th scope="col">証券会社</th>
                 <th scope="col" onClick={() => this.test()}>買い付け余力</th>
               </tr>
             </thead>
@@ -158,23 +168,50 @@ class App extends React.Component {
           <table className="table" style={{display: this.state.companyNameStringList.length != 0? '' : 'none'}}>
             <thead>
               <tr>
-                <th scope="col">ブックビルディング期間</th>
-                <th scope="col">証券コード</th>
-                <th scope="col">新規上場企業名</th>
-                <th scope="col">SBI</th>
-                <th scope="col">みずほ</th>
-                <th scope="col">結果</th>
+                <th scope="col" className='text-center'>ブックビルディング期間</th>
+                <th scope="col" className='text-center'>証券コード</th>
+                <th scope="col" className='text-center'>新規上場企業名</th>
+                <th scope="col" className='text-center'>SBI</th>
+                <th scope="col" className='text-center'>みずほ</th>
+                <th scope="col" className='text-center'>結果（SBI）</th>
+                <th scope="col" className='text-center'>結果（みずほ）</th>
               </tr>
             </thead>
             <tbody>
             {this.state.companyNameStringList.map((companyName, i) => (
-              <tr>
-                <td key={this.state.bookBuildingStringList[i]}>{this.state.bookBuildingStringList[i]}</td>
-                <td key={this.state.targetCdStringList[i]}>{this.state.targetCdStringList[i]}</td>
-                <td key={companyName}>{companyName}</td>
-                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i])} onClick={() => this.sbiBookBuildingSubmit(this.state.targetCdStringList[i])}/></td>
-                <td scope="row"><input type="button" value="実行" disabled={this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i])} onClick={() => this.mizuhoBookBuildingSubmit(this.state.targetCdStringList[i])}/></td>
-                <td>{this.state.responseValueForMizuhoBookBuilding}</td>
+              <tr className={this.state.bookBuildingStringList[i] == '---' ? 'table-secondary' : ''}>
+                <td className='text-center' key={this.state.bookBuildingStringList[i]}>{this.state.bookBuildingStringList[i]}</td>
+                <td className='text-center' key={this.state.targetCdStringList[i]}>{this.state.targetCdStringList[i]}</td>
+                <td className='text-center' key={companyName}>{companyName}</td>
+                <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'kikanGai' || this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'false' || this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'kanryo') ? true: false} onClick={() => this.sbiBookBuildingSubmit(this.state.targetCdStringList[i], this.state.companyNameStringList[i])}/></td>
+                <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i]) == 'kikanGai' || this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i]) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(this.state.targetCdStringList[i])}/></td>
+                {(() => {
+                  if (this.state.bookBuildingStringList[i] == '---') {
+                    return <td className='text-center'></td>;
+                  }
+                })()}
+                {(() => {
+                  if (this.state.bookBuildingStringList[i] == '---') {
+                    return <td className='text-center'></td>;
+                  }
+                })()}
+                {(() => {
+                  if (this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'kikanGai') {
+                    return <td className='text-center'><img src={kikanGai} id="statusImageForKikanGai" /></td>;
+                  }
+                })()}
+                {(() => {
+                  if ((this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'kanryo' || this.state.responseValueForSbiBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')) {
+                    return <td className='text-center'><img src={kanryo} id="statusImageForKanryo" /></td>;
+                  }
+                })()}
+                {(() => {
+                  if (this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i]) == 'kikanGai') {
+                    return <td className='text-center'><img src={kikanGai} id="statusImageForKikanGai" /></td>;
+                  } else {
+                    return <td className='text-center'>{this.state.responseValueForMizuhoBookBuilding}</td>;
+                  }
+                })()}
               </tr>
             ))}
             </tbody>
