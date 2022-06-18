@@ -3,8 +3,14 @@ github.com/Shinya0714/manamana/go/app/general v0.0.0-20220423065810-578d063aa2a0
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220423065810-578d063aa2a0/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424063837-eb4a4f715e84 h1:Y8NWGsau8ExUzExcQxo/2VVPdl7sht6MTwc2Uj6eMV0=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424063837-eb4a4f715e84/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618052547-5e6dbfcdab0f h1:+xVPY2aYT8bpUqB+h1p17WrDqAzAQ3rKGkBhqKufxx4=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618052547-5e6dbfcdab0f/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618055002-66ce17142376 h1:ixah3T5svLB301MGEFAA8ybczc3915iza0ytEU5ha2A=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618055002-66ce17142376/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
 github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220424053513-5b0014657de1 h1:P8Zx2+G6ciDOrblOTZj0iBizbj79neSj7UNpY9s5Ri8=
 github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220424053513-5b0014657de1/go.mod h1:h994dIarupgks+t5/HvJVTgjQOl4l4vJkGZOP2dOtt4=
+github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6dbfcdab0f h1:K4CHvHf5cXYqUl6+/Ix5Q57ARguYmBqxIoBZMA1SHb4=
+github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6dbfcdab0f/go.mod h1:2jgUfQ1Y3qGF+whBnoOWWliHWdpp2647Jdg3/dLnvY0=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
