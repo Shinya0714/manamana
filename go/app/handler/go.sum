@@ -13,6 +13,8 @@ github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618052547-5e6dbfcdab0f
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618052547-5e6dbfcdab0f/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618055002-66ce17142376 h1:ixah3T5svLB301MGEFAA8ybczc3915iza0ytEU5ha2A=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618055002-66ce17142376/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618061913-bfefcef92e9d h1:jBHhkbJnEkkB3kxr0mDe0aayh1UVRq7xBAxyiFvTFOc=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618061913-bfefcef92e9d/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=

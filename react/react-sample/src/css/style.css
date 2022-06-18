@@ -27,3 +27,15 @@ footer {
   text-align: center;
   margin: 20px;
 }
+
+#statusImageForKikanGai {
+
+  width: 80px;
+  height: 40px;
+}
+
+#statusImageForKanryo {
+
+  width: 60px;
+  height: 40px;
+}
