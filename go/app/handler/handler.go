@@ -259,8 +259,8 @@ func getSbiBalance(c echo.Context) (err error) {
 		}),
 	)
 
-	defer driver.Stop()
 	driver.Start()
+	defer driver.Stop()
 
 	fmt.Println("driver読み込み完了")
 
