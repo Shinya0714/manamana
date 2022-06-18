@@ -11,7 +11,7 @@ require (
 )
 
 require (
-	github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424063837-eb4a4f715e84 // indirect
+	github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618052547-5e6dbfcdab0f // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
