@@ -39,7 +39,5 @@ func CheckBookoBuildingPossible(bookBuildingString string) string {
 		}
 	}
 
-	fmt.Printf(bookoBuildingPossible)
-
 	return bookoBuildingPossible
 }
