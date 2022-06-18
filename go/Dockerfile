@@ -3,6 +3,28 @@ FROM golang:latest
 COPY ./go/app /app/go
 
 # 切り替え
+WORKDIR /app/go/general
+
+RUN rm go.mod
+
+# 初期化
+RUN go mod init github.com/Shinya0714/manamana/go/app/general
+
+# モジュール取得
+RUN go mod tidy
+
+RUN rm general
+
+# ビルド
+RUN go build -o general . 
+
+RUN touch general
+
+RUN pwd
+
+RUN ls -lt
+
+# 切り替え
 WORKDIR /app/go/handler
 
 RUN rm go.mod
