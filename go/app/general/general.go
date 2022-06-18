@@ -32,7 +32,10 @@ func CheckBookoBuildingPossible(bookBuildingString string) string {
 
 		if fromDateInt <= toDayInt && toDayInt <= toDateInt {
 
-			bookoBuildingPossible = "true"
+			bookoBuildingPossible = "kikanNai"
+		} else {
+
+			bookoBuildingPossible = "kikanGai"
 		}
 	}
 
