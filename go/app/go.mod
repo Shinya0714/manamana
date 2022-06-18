@@ -2,10 +2,10 @@ module github.com/Shinya0714/manamana/go/app/main
 
 go 1.17
 
-require github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220424053513-5b0014657de1
+require github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6dbfcdab0f
 
 require (
-	github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424063837-eb4a4f715e84 // indirect
+	github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618055002-66ce17142376 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
