@@ -7,6 +7,10 @@ github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424063837-eb4a4f715e84
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424063837-eb4a4f715e84/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424064935-99cac9d77aac h1:ljvze9wOxxKCB6M7sJ00sfEmPSUmaou5oIfHY7c8zYQ=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424064935-99cac9d77aac/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618034631-6f2b087ab78b h1:m3NqSgtc/Qt2+6DHBwbXR34QmuLr/vmC5VZbb/6uz2g=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618034631-6f2b087ab78b/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618052547-5e6dbfcdab0f h1:+xVPY2aYT8bpUqB+h1p17WrDqAzAQ3rKGkBhqKufxx4=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618052547-5e6dbfcdab0f/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
