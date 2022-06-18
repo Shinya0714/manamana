@@ -19,7 +19,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sclevine/agouti"
-	"golang.org/x/net/websocket"
 )
 
 type Owner struct {
@@ -58,7 +57,6 @@ func Handler() {
 	e.GET("/schedule", getSchedule)
 	e.GET("/sbiBookBuilding/:tickerSymbol", sbiBookBuilding)
 	e.GET("/mizuhoBookBuilding/:tickerSymbol", mizuhoBookBuilding)
-	e.GET("/ws", msgHandler)
 
 	// local サーバー
 	e.Logger.Fatal(e.Start(":8000"))
@@ -121,10 +119,10 @@ func sbiBookBuildingMap() map[string]string {
 	page.Navigate("https://www.sbisec.co.jp/ETGate")
 
 	// // ユーザーネーム
-	// page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
 
 	// // パスワード
-	// page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
 
 	// 「ログイン」
 	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
@@ -277,10 +275,10 @@ func getSbiBalance(c echo.Context) (err error) {
 	page.Navigate("https://www.sbisec.co.jp/ETGate")
 
 	// // ユーザーネーム
-	// page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
 
 	// // パスワード
-	// page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
 
 	// 「ログイン」
 	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
@@ -389,9 +387,9 @@ func getMizuhoBalance(c echo.Context) (err error) {
 
 	page.FindByXPath("/html/body/header[1]/div/div[1]/div/div/div[2]/ul/li[2]").Click()
 
-	// page.FindByXPath("//*[@id='IDInputKB']").Fill(os.Getenv("MIZUHO_ID"))
+	page.FindByXPath("//*[@id='IDInputKB']").Fill(os.Getenv("MIZUHO_ID"))
 
-	// page.FindByXPath("//*[@id='PWInputKB']").Fill(os.Getenv("MIZUHO_PASSWORD"))
+	page.FindByXPath("//*[@id='PWInputKB']").Fill(os.Getenv("MIZUHO_PASSWORD"))
 
 	page.FindByXPath("//*[@id='form01']/p/span/input").Click()
 
@@ -629,10 +627,10 @@ func sbiBookBuilding(c echo.Context) (err error) {
 	page.Navigate("https://www.sbisec.co.jp/ETGate")
 
 	// // ユーザーネーム
-	// page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
 
 	// // パスワード
-	// page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
 
 	// 「ログイン」
 	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
@@ -708,38 +706,4 @@ func sbiBookBuilding(c echo.Context) (err error) {
 	fmt.Println(resultString)
 
 	return c.JSON(http.StatusOK, resultString)
-}
-
-func msgHandler(c echo.Context) (err error) {
-
-	fmt.Printf("msgHandler通ってる")
-
-	websocket.Handler(func(ws *websocket.Conn) {
-
-		defer ws.Close()
-
-		// 初回のメッセージを送信
-		err := websocket.Message.Send(ws, "Server: Hello, Client!")
-		if err != nil {
-			c.Logger().Error(err)
-		}
-
-		time.Sleep(5 * time.Second)
-
-		// 初回のメッセージを送信
-		err2 := websocket.Message.Send(ws, "Server: Hello, Client2!")
-		if err2 != nil {
-			c.Logger().Error(err2)
-		}
-
-		time.Sleep(5 * time.Second)
-
-		// 初回のメッセージを送信
-		err3 := websocket.Message.Send(ws, "Server: Hello, Client3!")
-		if err3 != nil {
-			c.Logger().Error(err3)
-		}
-	}).ServeHTTP(c.Response(), c.Request())
-
-	return nil
 }
