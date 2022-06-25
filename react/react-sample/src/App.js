@@ -32,6 +32,7 @@ class App extends React.Component {
     // this.schedule();
 
     // actionsの動作テスト
+    // actionsの動作テスト
   }
 
   // getOwner = () => {
