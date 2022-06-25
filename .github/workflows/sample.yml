@@ -1,12 +1,9 @@
 name: EC2 auto deploy
 
 on:
- pull_request:
-   branches: [ main ]
-   types: [closed]
-
- workflow_dispatch:
-
+  push:
+    branches:
+      - main
 jobs:
  build:
    runs-on: ubuntu-latest
