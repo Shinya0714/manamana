@@ -33,6 +33,7 @@ class App extends React.Component {
 
     // actionsの動作テスト
     // actionsの動作テスト
+    // actionsの動作テスト
   }
 
   // getOwner = () => {
