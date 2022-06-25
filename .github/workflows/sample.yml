@@ -48,6 +48,3 @@ jobs:
 
          # SSHのセキュリティグループを閉じる
          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
-
-         # SSHのポートを閉じる
-         aws --profile eyemovic-dev ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr "${{ steps.ip.outputs.ipv4 }}"/32
