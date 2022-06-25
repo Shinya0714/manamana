@@ -30,6 +30,8 @@ class App extends React.Component {
 
     // this.getBalance();
     // this.schedule();
+
+    // actionsの動作テスト
   }
 
   // getOwner = () => {
