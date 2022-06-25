@@ -28,8 +28,8 @@ class App extends React.Component {
       balance: 0
     }
 
-    this.getBalance();
-    this.schedule();
+    // this.getBalance();
+    // this.schedule();
   }
 
   // getOwner = () => {
