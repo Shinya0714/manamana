@@ -184,7 +184,7 @@ class App extends React.Component {
                 <td className='text-center' key={this.state.targetCdStringList[i]}>{this.state.targetCdStringList[i]}</td>
                 <td className='text-center' key={companyName}>{companyName}</td>
                 <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'kikanGai' || this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'false' || this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolList[i]) == 'kanryo') ? true: false} onClick={() => this.sbiBookBuildingSubmit(this.state.targetCdStringList[i], this.state.companyNameStringList[i])}/></td>
-                <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i]) == 'kikanGai' || this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i]) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(this.state.targetCdStringList[i])}/></td>
+                <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i]) == 'kikanGai' || this.checkBookoBuildingPossible(this.state.bookBuildingPossibleBoolListForMizuho[i]) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(this.state.targetCdStringList[i], this.state.companyNameStringList[i])}/></td>
                 {(() => {
                   if (this.state.bookBuildingStringList[i] == '---') {
                     return <td className='text-center'></td>;
