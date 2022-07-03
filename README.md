@@ -25,6 +25,11 @@ ipo（新規公開株式）の自動申し込み、<br/>
 資産運用の改善をこのアプリケーションで一括して行う事ができます。
 <br/>
 <br/>
+<img src="./react/react-sample/src/images/MANAMANA_機能紹介.003.jpeg">
+<br/>
+<img src="./react/react-sample/src/images/MANAMANA_機能紹介.004.jpeg">
+<br/>
+<br/>
 【課題とその背景】<br/>
 課題として、<br/>
 ◯SPA<br/>
