@@ -26,6 +26,9 @@ class App extends React.Component {
       responseValueForMizuhoBookBuilding: "",
       dataList: [],
 
+      sbiBalanceRenderingFlg: false,
+      mizuhoBalanceRenderingFlg: false,
+      scheduleRenderingFlg: false,
       balance: 0
     }
 
@@ -48,42 +51,77 @@ class App extends React.Component {
     axios.get('/api/schedule')
       .then((response) => {
 
-        var jsonObject = JSON.parse(response.data.outputJson)
+        // if(response.data === undefined) {
 
-        this.setState({dataList: jsonObject})
-        this.setState({responseValueForSbi: response.data.sbiBalance})
-
-        console.log(response.data.outputJson);
-        console.log(response.data.sbiBalance);
-        console.log(response.data.mizuhoBalance);
-        console.log(this.state.dataList)
-        // const allResponse = {};
-        // allResponse.servers = [];
-        // for (const res of responses) {
-        //     // 必要ならこの辺でレスポンスを加工
-        //     allResponse.servers.push(res.data);
+        //   throw new Error('')
         // }
 
-        // console.log(allResponse.servers[1]);
+        var jsonObject = JSON.parse(response.data.outputJson)
+        var sbiBalance = response.data.sbiBalance
+        var mizuhoBalance = response.data.mizuhoBalance
+
+        this.setState({dataList: jsonObject})
+        this.setState({responseValueForSbi: sbiBalance})
+        this.setState({responseValueForMizuho: mizuhoBalance})
+
+        if(jsonObject != null) {
+
+          this.setState({scheduleRenderingFlg: true})
+        }
+
+        if(sbiBalance != null) {
+
+          this.setState({sbiBalanceRenderingFlg: true})
+        }
+
+        if(mizuhoBalance != null) {
+
+          this.setState({mizuhoBalanceRenderingFlg: true})
+        }
+        
+        console.log('schedule success');
       })
-      .catch(console.error);
+      .catch((error) => {
+        console.error('schedule err:', error);
+      })
+    
   }
 
   getBalance = () => {
 
-    axios.get('/api/sbiBalance')
-      .then((response) => {
+    axios.get('/api/balance')
+    .then((response) => {
 
-        this.setState({responseValueForSbi: response.data})
-      })
-      .catch(console.error);
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error('getBalance err:', error);
+    })
 
-      axios.get('/api/mizuhoBalance')
-      .then((response) => {
+    // axios.get('/api/sbiBalance')
+    // .then((response) => {
 
-        this.setState({responseValueForMizuho: response.data})
-      })
-      .catch(console.error);
+    //   this.setState({responseValueForSbi: response.data})
+    // })
+    // .catch((error) => {
+    //   console.error('sbiBalance err:', error);
+    // })
+
+    // axios.get('/api/mizuhoBalance')
+    // .then((response) => {
+
+    //   this.setState({responseValueForMizuho: response.data})
+    // })
+    // .catch((error) => {
+    //   console.error('sbiBalance err:', error);
+    // })
+
+    // if(this.state.balanceRenderingFlg != false) {
+
+    //   console.log('balance success');
+
+    //   this.setState({balanceRenderingFlg: true})
+    // }
   }
 
   sbiBookBuildingSubmit = (tickerSymbol, companyName) => {
@@ -122,8 +160,6 @@ class App extends React.Component {
 
   checkBookoBuildingPossible(target) {
 
-    console.log(target)
-
     var result = 'false';
 
     if(target == 'true') {
@@ -156,13 +192,10 @@ class App extends React.Component {
     return (
 
       <div>
-      {/* {this.state.dataList.map((data, i) => (
-        <p>{data.CompanyNameString}</p>
-      ))} */}
       <div className="container">
         <img src={imgLogo} className="mt-3 mb-3" id="logo" />
         <div className="contentDiv p-3">
-        <table className="table" style={{display: this.state.dataList.length != 0? '' : 'none'}}>
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">証券会社</th>
@@ -172,16 +205,27 @@ class App extends React.Component {
           <tbody>
             <tr>
               <th scope="row">SBI</th>
-              <td>{this.state.responseValueForSbi}</td>
+              <td>
+                {this.state.responseValueForSbi}
+                <button className="btn btn-primary" type="button" disabled style={{display: this.state.sbiBalanceRenderingFlg? 'none' : ''}}>
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Loading...
+                </button>
+              </td>
             </tr>
             <tr>
               <th scope="row">みずほ</th>
-              <td>{this.state.responseValueForMizuho}</td>
+              <td>
+                {this.state.responseValueForMizuho}
+                <button className="btn btn-primary" type="button" disabled style={{display: this.state.mizuhoBalanceRenderingFlg? 'none' : ''}}>
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Loading...
+              </button>
+              </td>
             </tr>
           </tbody>
         </table>
-        <p>{this.state.scheduleListString}</p>
-        <table className="table" style={{display: this.state.dataList.length != 0? '' : 'none'}}>
+        <table className="table" style={{display: this.state.scheduleRenderingFlg? '' : 'none'}}>
           <thead>
             <tr>
               <th scope="col" className='text-center'>ブックビルディング期間</th>
@@ -232,10 +276,12 @@ class App extends React.Component {
           ))}
           </tbody>
         </table>
-        <button className="btn btn-primary" type="button" disabled style={{display: this.state.dataList.length != 0? 'none' : ''}}>
+        <p>
+        <button className="btn btn-primary" type="button" disabled style={{display: this.state.scheduleRenderingFlg? 'none' : ''}}>
           <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           &nbsp;&nbsp;Loading...
         </button>
+        </p>
         </div>
       </div>
       <footer>
