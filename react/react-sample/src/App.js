@@ -57,28 +57,16 @@ class App extends React.Component {
         // }
 
         var jsonObject = JSON.parse(response.data.outputJson)
-        var sbiBalance = response.data.sbiBalance
-        var mizuhoBalance = response.data.mizuhoBalance
 
         this.setState({dataList: jsonObject})
-        this.setState({responseValueForSbi: sbiBalance})
-        this.setState({responseValueForMizuho: mizuhoBalance})
+
+        console.log('this.state.dataList:' + this.state.dataList);
 
         if(jsonObject != null) {
 
           this.setState({scheduleRenderingFlg: true})
         }
 
-        if(sbiBalance != null) {
-
-          this.setState({sbiBalanceRenderingFlg: true})
-        }
-
-        if(mizuhoBalance != null) {
-
-          this.setState({mizuhoBalanceRenderingFlg: true})
-        }
-        
         console.log('schedule success');
       })
       .catch((error) => {
@@ -92,7 +80,26 @@ class App extends React.Component {
     axios.get('/api/balance')
     .then((response) => {
 
-      console.log(response.data);
+      var sbiBalance = response.data.sbiBalance
+      var mizuhoBalance = response.data.mizuhoBalance
+
+      this.setState({responseValueForSbi: sbiBalance})
+      this.setState({responseValueForMizuho: mizuhoBalance})
+
+      console.log('this.state.responseValueForSbi:' + this.state.responseValueForSbi);
+      console.log('this.state.responseValueForMizuho:' + this.state.responseValueForMizuho);
+
+      if(sbiBalance != null) {
+
+        this.setState({sbiBalanceRenderingFlg: true})
+      }
+
+      if(mizuhoBalance != null) {
+
+        this.setState({mizuhoBalanceRenderingFlg: true})
+      }
+      
+      console.log('getBalance success');
     })
     .catch((error) => {
       console.error('getBalance err:', error);
@@ -190,7 +197,6 @@ class App extends React.Component {
 
   render() {
     return (
-
       <div>
       <div className="container">
         <img src={imgLogo} className="mt-3 mb-3" id="logo" />
