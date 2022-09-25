@@ -32,7 +32,7 @@ class App extends React.Component {
       balance: 0
     }
 
-    // this.getBalance();
+    this.getBalance();
     this.schedule();
   }
 
@@ -51,11 +51,6 @@ class App extends React.Component {
     axios.get('/api/schedule')
       .then((response) => {
 
-        // if(response.data === undefined) {
-
-        //   throw new Error('')
-        // }
-
         var jsonObject = JSON.parse(response.data.outputJson)
 
         this.setState({dataList: jsonObject})
@@ -72,7 +67,6 @@ class App extends React.Component {
       .catch((error) => {
         console.error('schedule err:', error);
       })
-    
   }
 
   getBalance = () => {
@@ -86,8 +80,8 @@ class App extends React.Component {
       this.setState({responseValueForSbi: sbiBalance})
       this.setState({responseValueForMizuho: mizuhoBalance})
 
-      console.log('this.state.responseValueForSbi:' + this.state.responseValueForSbi);
-      console.log('this.state.responseValueForMizuho:' + this.state.responseValueForMizuho);
+      // console.log('this.state.responseValueForSbi:' + this.state.responseValueForSbi);
+      // console.log('this.state.responseValueForMizuho:' + this.state.responseValueForMizuho);
 
       if(sbiBalance != null) {
 
@@ -245,7 +239,7 @@ class App extends React.Component {
           </thead>
           <tbody>
           {this.state.dataList.map((target, i) => (
-            <tr className={this.state.dataList[i] == '---' ? 'table-secondary' : ''}>
+            <tr className={this.state.dataList[i] == '---' ? 'table-secondary' : ''} key={i}>
               <td className='text-center' key={target.BookBuildingString}>{target.BookBuildingString}</td>
               <td className='text-center' key={target.TargetCdString}>{target.TargetCdString}</td>
               <td className='text-center' key={target.CompanyNameString}>{target.CompanyNameString}</td>
