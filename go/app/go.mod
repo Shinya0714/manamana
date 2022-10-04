@@ -5,7 +5,7 @@ go 1.17
 require github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6dbfcdab0f
 
 require (
-	github.com/Shinya0714/manamana/go/app/general v0.0.0-20220618061913-bfefcef92e9d // indirect
+	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221004055935-46aed03a264f // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
