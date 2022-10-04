@@ -7,6 +7,21 @@ import (
 	"time"
 )
 
+func GetStatusMap() map[string]int {
+
+	m := map[string]int{
+		"CANCEL":            0,
+		"NO_HANDLING":       1,
+		"AVAILABLE":         2,
+		"WITHIN_THE_PERIOD": 3,
+		"OUT_OF_TERM":       4,
+		"RESERVED":          5,
+		"NO_RESERVATION":    6,
+	}
+
+	return m
+}
+
 func CheckBookoBuildingPossible(bookBuildingString string) string {
 
 	bookoBuildingPossible := "false"
