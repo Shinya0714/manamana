@@ -239,7 +239,7 @@ class App extends React.Component {
           </thead>
           <tbody>
           {this.state.dataList.map((target, i) => (
-            <tr className={this.state.dataList[i] == '---' ? 'table-secondary' : ''} key={i}>
+            <tr className={target.BookBuildingString == '---' ? 'table-secondary' : ''} key={i}>
               <td className='text-center' key={target.BookBuildingString}>{target.BookBuildingString}</td>
               <td className='text-center' key={target.TargetCdString}>{target.TargetCdString}</td>
               <td className='text-center' key={target.CompanyNameString}>{target.CompanyNameString}</td>
@@ -247,12 +247,12 @@ class App extends React.Component {
               <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
               {(() => {
                 if (target.BookBuildingString == '---') {
-                  return <td className='text-center'></td>;
-                }
-              })()}
-              {(() => {
-                if (target.BookBuildingString == '---') {
-                  return <td className='text-center'></td>;
+                  return (
+                    <React.Fragment>
+                      <td className='text-center'></td>
+                      <td className='text-center'></td>
+                    </React.Fragment>
+                  )
                 }
               })()}
               {(() => {
@@ -268,8 +268,11 @@ class App extends React.Component {
               {(() => {
                 if (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai') {
                   return <td className='text-center'><img src={kikanGai} id="statusImageForKikanGai" /></td>;
-                } else {
-                  return <td className='text-center'>{target.BookBuildingPossibleBoolStringForMizuho}</td>;
+                }
+              })()}
+              {(() => {
+                if ((this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kanryo' || this.state.responseValueForMizuhoBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')) {
+                  return <td className='text-center'><img src={kanryo} id="statusImageForKanryo" /></td>;
                 }
               })()}
             </tr>
