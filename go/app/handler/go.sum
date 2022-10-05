@@ -1,10 +1,8 @@
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221004055935-46aed03a264f h1:zjeYadVkJo41VfgG1atxl7VZQkA7Q0lFSWqOpgjYZzk=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221004055935-46aed03a264f/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221004064548-c6714dd1acba h1:4uTlh+eJV3I4Z/zGqjoe9ZOYqHnofluj0uYJqgVGMQw=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221004064548-c6714dd1acba/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005040119-540e13438340 h1:lImiJrxHZgCG5SeGQiF7tCWZABEQvceoUqkwJVZQY7U=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005040119-540e13438340/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005080027-6adbe3ac1e97 h1:31iip/hBiLalNG7l3NfSp5enKIvUS6WqX0ch6DMUmLc=
+github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005080027-6adbe3ac1e97/go.mod h1:vckhfKaB/F6+bik5MXq3NrbIVOYD3FZRRD0XGFBJ9KA=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
