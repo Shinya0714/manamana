@@ -3,7 +3,7 @@ module github.com/Shinya0714/manamana/go/app/handler
 go 1.17
 
 require (
-	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005080027-6adbe3ac1e97
+	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005081330-f3c8e691177d
 	github.com/jinzhu/gorm v1.9.16
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/lib/pq v1.10.5
