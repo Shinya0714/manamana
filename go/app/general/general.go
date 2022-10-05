@@ -58,7 +58,7 @@ func CheckBookoBuildingPossible(bookBuildingString string) string {
 	return bookoBuildingPossible
 }
 
-func loadEnv() {
+func LoadEnv() {
 
 	err := godotenv.Load("../.env")
 	if err != nil {
