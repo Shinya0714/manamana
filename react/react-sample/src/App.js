@@ -80,9 +80,6 @@ class App extends React.Component {
       this.setState({responseValueForSbi: sbiBalance})
       this.setState({responseValueForMizuho: mizuhoBalance})
 
-      // console.log('this.state.responseValueForSbi:' + this.state.responseValueForSbi);
-      // console.log('this.state.responseValueForMizuho:' + this.state.responseValueForMizuho);
-
       if(sbiBalance != null) {
 
         this.setState({sbiBalanceRenderingFlg: true})
@@ -98,31 +95,6 @@ class App extends React.Component {
     .catch((error) => {
       console.error('getBalance err:', error);
     })
-
-    // axios.get('/api/sbiBalance')
-    // .then((response) => {
-
-    //   this.setState({responseValueForSbi: response.data})
-    // })
-    // .catch((error) => {
-    //   console.error('sbiBalance err:', error);
-    // })
-
-    // axios.get('/api/mizuhoBalance')
-    // .then((response) => {
-
-    //   this.setState({responseValueForMizuho: response.data})
-    // })
-    // .catch((error) => {
-    //   console.error('sbiBalance err:', error);
-    // })
-
-    // if(this.state.balanceRenderingFlg != false) {
-
-    //   console.log('balance success');
-
-    //   this.setState({balanceRenderingFlg: true})
-    // }
   }
 
   sbiBookBuildingSubmit = (tickerSymbol, companyName) => {
@@ -245,36 +217,22 @@ class App extends React.Component {
               <td className='text-center' key={target.CompanyNameString}>{target.CompanyNameString}</td>
               <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'false' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kanryo') ? true: false} onClick={() => this.sbiBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
               <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
-              {(() => {
-                if (target.BookBuildingString == '---') {
-                  return (
-                    <React.Fragment>
-                      <td className='text-center'></td>
-                      <td className='text-center'></td>
-                    </React.Fragment>
-                  )
-                }
-              })()}
-              {(() => {
-                if (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kikanGai') {
-                  return <td className='text-center'><img src={kikanGai} id="statusImageForKikanGai" /></td>;
-                }
-              })()}
-              {(() => {
-                if ((this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kanryo' || this.state.responseValueForSbiBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')) {
-                  return <td className='text-center'><img src={kanryo} id="statusImageForKanryo" /></td>;
-                }
-              })()}
-              {(() => {
-                if (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai') {
-                  return <td className='text-center'><img src={kikanGai} id="statusImageForKikanGai" /></td>;
-                }
-              })()}
-              {(() => {
-                if ((this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kanryo' || this.state.responseValueForMizuhoBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')) {
-                  return <td className='text-center'><img src={kanryo} id="statusImageForKanryo" /></td>;
-                }
-              })()}
+              <td className='text-center' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
+              <td className='text-center' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
+              <td className='text-center' style={{display: this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kikanGai'? '' : 'none'}}>
+                <img src={kikanGai} id="statusImageForKikanGai" />
+              </td>
+              <td className='text-center' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kanryo' || this.state.responseValueForSbiBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')? '' : 'none'}}>
+                <img src={kanryo} id="statusImageForKanryo" />
+              </td>
+              <td className='text-center' style={{display: this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai'? '' : 'none'}}>
+                <img src={kikanGai} id="statusImageForKikanGai" />
+              </td>
+              <td className='text-center' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kanryo' || this.state.responseValueForMizuhoBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')? '' : 'none'}}>
+                <img src={kanryo} id="statusImageForKanryo" />
+              </td>
+              <td className='text-center' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false')? '' : 'none'}}></td>
+              <td className='text-center' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'true')? '' : 'none'}}></td>
             </tr>
           ))}
           </tbody>
