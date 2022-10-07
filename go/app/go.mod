@@ -6,7 +6,7 @@ require github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6d
 
 require (
 	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221007063632-62c4b8be3729 // indirect
-	github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007065527-fd93bee91d57 // indirect
+	github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007071327-ff983e4b8b2e // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect

@@ -1,15 +1,11 @@
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20220424063837-eb4a4f715e84/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005040119-540e13438340 h1:lImiJrxHZgCG5SeGQiF7tCWZABEQvceoUqkwJVZQY7U=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005040119-540e13438340/go.mod h1:6lg6RIJdARSEqapJUZomeQz6+t+mMD72V+cAYDaK7QM=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005080027-6adbe3ac1e97 h1:31iip/hBiLalNG7l3NfSp5enKIvUS6WqX0ch6DMUmLc=
-github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005080027-6adbe3ac1e97/go.mod h1:vckhfKaB/F6+bik5MXq3NrbIVOYD3FZRRD0XGFBJ9KA=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20221007063632-62c4b8be3729 h1:BgD7D83Rcns7Xj/8JwdrdOLxBbtxW7jPYxq9YmO/uHk=
 github.com/Shinya0714/manamana/go/app/general v0.0.0-20221007063632-62c4b8be3729/go.mod h1:HDPrFp0OvA9U1S4r0/Ez6fs1jKDQFJe2SwYi40UcYBQ=
 github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6dbfcdab0f h1:K4CHvHf5cXYqUl6+/Ix5Q57ARguYmBqxIoBZMA1SHb4=
 github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6dbfcdab0f/go.mod h1:2jgUfQ1Y3qGF+whBnoOWWliHWdpp2647Jdg3/dLnvY0=
-github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007065527-fd93bee91d57 h1:HBA3mM+bd/sl0ahPgu40F7cYzYr72e09rO8M7Q4fKL0=
-github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007065527-fd93bee91d57/go.mod h1:qbRoCThlfoKVcldCpMska3N4uYWoTeDG7+H2DtVxr3E=
+github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007071327-ff983e4b8b2e h1:1N2tR1B5iG9HN+KWdPqKIkoQMDX+mazT3iNvw+PkA34=
+github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007071327-ff983e4b8b2e/go.mod h1:qbRoCThlfoKVcldCpMska3N4uYWoTeDG7+H2DtVxr3E=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
@@ -50,7 +46,6 @@ github.com/jinzhu/inflection v1.0.0/go.mod h1:h+uFLlag+Qp1Va5pdKtLDYj+kHp5pxUVkr
 github.com/jinzhu/now v1.0.1/go.mod h1:d3SSVoowX0Lcu0IBviAWJpolVfI5UJVZZ7cO71lE/z8=
 github.com/joho/godotenv v1.4.0 h1:3l4+N6zfMWnkbPEXKng2o2/MR5mSwTrBih4ZEkkz1lg=
 github.com/joho/godotenv v1.4.0/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
-github.com/labstack/echo/v4 v4.7.2 h1:Kv2/p8OaQ+M6Ex4eGimg9b9e6icoxA42JSlOR3msKtI=
 github.com/labstack/echo/v4 v4.7.2/go.mod h1:xkCDAdFCIf8jsFQ5NnbK7oqaF/yU1A1X20Ltm0OvSks=
 github.com/labstack/echo/v4 v4.9.0 h1:wPOF1CE6gvt/kmbMR4dGzWvHMPT+sAEUJOwOTtvITVY=
 github.com/labstack/echo/v4 v4.9.0/go.mod h1:xkCDAdFCIf8jsFQ5NnbK7oqaF/yU1A1X20Ltm0OvSks=
