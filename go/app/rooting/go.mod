@@ -1,4 +1,4 @@
-module rooting
+module github.com/Shinya0714/manamana/go/app/rooting
 
 go 1.17
 
