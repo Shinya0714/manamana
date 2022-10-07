@@ -5,12 +5,13 @@ go 1.17
 require github.com/Shinya0714/manamana/go/app/handler v0.0.0-20220618052547-5e6dbfcdab0f
 
 require (
-	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221005080027-6adbe3ac1e97 // indirect
+	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221007063632-62c4b8be3729 // indirect
+	github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007065527-fd93bee91d57 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
-	github.com/labstack/echo/v4 v4.7.2 // indirect
+	github.com/labstack/echo/v4 v4.9.0 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/lib/pq v1.10.5 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
