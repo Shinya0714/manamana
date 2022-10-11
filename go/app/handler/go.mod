@@ -3,11 +3,9 @@ module github.com/Shinya0714/manamana/go/app/handler
 go 1.17
 
 require (
-	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221007063632-62c4b8be3729
-	github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221007073551-e41ee41964aa
-	github.com/jinzhu/gorm v1.9.16
+	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221010085326-b9da6b4b0fd8
+	github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221011052038-6301dfbabe8d
 	github.com/labstack/echo/v4 v4.9.0
-	github.com/lib/pq v1.10.5
 )
 
 require (
@@ -21,9 +19,9 @@ require (
 	github.com/sclevine/agouti v3.0.0+incompatible // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
+	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b // indirect
+	golang.org/x/net v0.0.0-20221004154528-8021a29435af // indirect
+	golang.org/x/sys v0.0.0-20221006211917-84dc82d7e875 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	golang.org/x/time v0.0.0-20220411224347-583f2d630306 // indirect
+	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
 )

@@ -13,22 +13,30 @@ class App extends React.Component {
 
     this.state = {
 
-      selectedDiv: 1,
       responseValue: "",
       responseValueForSbi: "",
       responseValueForMizuho: "",
+      responseValueForSmbc: "",
+
       companyNameStringList: [],
+
       bookBuildingStringList: [],
       bookBuildingPossibleBoolList: [],
       bookBuildingPossibleBoolListForMizuho: [],
+
       targetCdStringList: [],
+
       responseValueForSbiBookBuilding: "",
       responseValueForMizuhoBookBuilding: "",
+      
       dataList: [],
 
       sbiBalanceRenderingFlg: false,
       mizuhoBalanceRenderingFlg: false,
+      smbcBalanceRenderingFlg: false,
+      
       scheduleRenderingFlg: false,
+      
       balance: 0
     }
 
@@ -76,9 +84,11 @@ class App extends React.Component {
 
       var sbiBalance = response.data.sbiBalance
       var mizuhoBalance = response.data.mizuhoBalance
+      var smbcBalance = response.data.smbcBalance
 
       this.setState({responseValueForSbi: sbiBalance})
       this.setState({responseValueForMizuho: mizuhoBalance})
+      this.setState({responseValueForSmbc: smbcBalance})
 
       if(sbiBalance != null) {
 
@@ -88,6 +98,11 @@ class App extends React.Component {
       if(mizuhoBalance != null) {
 
         this.setState({mizuhoBalanceRenderingFlg: true})
+      }
+
+      if(smbcBalance != null) {
+
+        this.setState({smbcBalanceRenderingFlg: true})
       }
       
       console.log('getBalance success');
@@ -190,6 +205,16 @@ class App extends React.Component {
               <td>
                 {this.state.responseValueForMizuho}
                 <button className="btn btn-primary" type="button" disabled style={{display: this.state.mizuhoBalanceRenderingFlg? 'none' : ''}}>
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Loading...
+              </button>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">SMBC</th>
+              <td>
+                {this.state.responseValueForSmbc}
+                <button className="btn btn-primary" type="button" disabled style={{display: this.state.smbcBalanceRenderingFlg? 'none' : ''}}>
                   <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                   &nbsp;&nbsp;Loading...
               </button>
