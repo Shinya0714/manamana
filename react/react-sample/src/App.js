@@ -219,7 +219,9 @@ class App extends React.Component {
       <div className="container">
         <div className="row mt-3">
           <div className='col-md-2 col-sm-12 text-center'>
-            <img src={imgLogo} id="logo" />
+            <a href='/'>
+              <img src={imgLogo} id="logo" />
+            </a>
             <br/>
             <input className="mt-3 mb-3 btn btn-outline-dark" type="button" value="最新の情報に更新" onClick={() => this.update()} id="updateButton" />
           </div>
