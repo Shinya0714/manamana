@@ -162,6 +162,24 @@ class App extends React.Component {
     }
   }
 
+  smbcBookBuildingSubmit = (tickerSymbol, companyName) => {
+
+    var result = window.confirm('【対象】\r\n' + '（' + tickerSymbol + '）' + companyName + '\r\n\r\n実行してもよろしいですか？');
+    if(result) {
+
+      axios.get('/api/smbcBookBuilding/' + tickerSymbol)
+      .then((response) => {
+
+        this.setState({responseValueForSmbcBookBuilding: response.data})
+      })
+      .then(() => {
+
+        this.schedule()
+      })
+      .catch(console.error);
+    }
+  }
+
   checkBookoBuildingPossible(target) {
 
     var result = 'false';
@@ -274,7 +292,7 @@ class App extends React.Component {
               <td className='text-center' key={target.CompanyNameString}>{target.CompanyNameString}</td>
               <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'false' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kanryo') ? true: false} onClick={() => this.sbiBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
               <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kanryo') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
-              <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
+              <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSmbc) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSmbc) == 'false') ? true: false} onClick={() => this.smbcBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
               <td className='text-center' scope="row"><input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/></td>
               <td className='text-center' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
               <td className='text-center' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>

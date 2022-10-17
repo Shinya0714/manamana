@@ -19,6 +19,7 @@ func Handler() {
 	e.GET("/schedule", rooting.GetSchedule)
 	e.GET("/sbiBookBuilding/:tickerSymbol", rooting.SbiBookBuilding)
 	e.GET("/mizuhoBookBuilding/:tickerSymbol", rooting.MizuhoBookBuilding)
+	e.GET("/smbcBookBuilding/:tickerSymbol", rooting.SmbcBookBuilding)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }

@@ -26,11 +26,11 @@ driver.get('https://trade.smbcnikko.co.jp/Login/0/login/ipan_web/hyoji/')
 
 time.sleep(3)
 
-driver.find_element(by=By.XPATH, value='/html/body/div[1]/div[6]/div/div[1]/div[2]/div[1]/form/div/div[1]/div[2]/input').send_keys(os.environ['SHITEN_CODE'])
+driver.find_element(by=By.XPATH, value='/html/body/div[1]/div[6]/div/div[1]/div[2]/div[1]/form/div/div[1]/div[2]/input').send_keys(os.environ['SMBC_SHITEN_CODE'])
 
-driver.find_element(by=By.XPATH, value='/html/body/div[1]/div[6]/div/div[1]/div[2]/div[1]/form/div/div[1]/div[3]/input').send_keys(os.environ['KOZA_NUMBER'])
+driver.find_element(by=By.XPATH, value='/html/body/div[1]/div[6]/div/div[1]/div[2]/div[1]/form/div/div[1]/div[3]/input').send_keys(os.environ['SMBC_KOZA_NUMBER'])
 
-driver.find_element(by=By.XPATH, value='/html/body/div[1]/div[6]/div/div[1]/div[2]/div[1]/form/div/div[1]/div[4]/div/input').send_keys(os.environ['PASS_WORD'])
+driver.find_element(by=By.XPATH, value='/html/body/div[1]/div[6]/div/div[1]/div[2]/div[1]/form/div/div[1]/div[4]/div/input').send_keys(os.environ['SMBC_PASS_WORD'])
 
 driver.find_element(by=By.XPATH, value='/html/body/div[1]/div[6]/div/div[1]/div[2]/div[1]/form/div/div[1]/p[3]/input').click()
 
