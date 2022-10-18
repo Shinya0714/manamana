@@ -341,7 +341,7 @@ class App extends React.Component {
                 <input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSmbc) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSmbc) == 'false') ? true: false} onClick={() => this.smbcBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/>
               </td>
               <td className='text-center align-middle' scope="row">
-                <input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/>
+                <input type="button" value="実行" disabled={(this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForRakuten) == 'kikanGai' || this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForRakuten) == 'false') ? true: false} onClick={() => this.mizuhoBookBuildingSubmit(target.TargetCdString, target.CompanyNameString)}/>
               </td>
               <td className='text-center align-middle' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
               <td className='text-center align-middle' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
@@ -361,6 +361,7 @@ class App extends React.Component {
               </td>
               <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false')? '' : 'none'}}></td>
               <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'true')? '' : 'none'}}></td>
+              {/* SMBC */}
               <td className='text-center align-middle' style={{display: this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai'? '' : 'none'}}>
                 <img src={kikanGai} id="statusImageForKikanGai" />
               </td>
@@ -369,14 +370,15 @@ class App extends React.Component {
               </td>
               <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false')? '' : 'none'}}></td>
               <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'true')? '' : 'none'}}></td>
-              <td className='text-center align-middle' style={{display: this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai'? '' : 'none'}}>
+              {/* 楽天 */}
+              <td className='text-center align-middle' style={{display: this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForRakuten) == 'kikanGai'? '' : 'none'}}>
                 <img src={kikanGai} id="statusImageForKikanGai" />
               </td>
-              <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kanryo' || this.state.responseValueForMizuhoBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')? '' : 'none'}}>
+              <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForRakuten) == 'kanryo' || this.state.responseValueForRakutenBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')? '' : 'none'}}>
                 <img src={kanryo} id="statusImageForKanryo" />
               </td>
-              <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'false')? '' : 'none'}}></td>
-              <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'true')? '' : 'none'}}></td>
+              <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForRakuten) == 'false')? '' : 'none'}}></td>
+              <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForRakuten) == 'true')? '' : 'none'}}></td>
             </tr>
           ))}
           </tbody>
