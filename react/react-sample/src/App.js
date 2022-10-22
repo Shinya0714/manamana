@@ -13,6 +13,8 @@ class App extends React.Component {
 
     this.state = {
 
+      logText: "",
+
       responseValue: "",
       responseValueForSbi: "",
       responseValueForMizuho: "",
@@ -56,6 +58,8 @@ class App extends React.Component {
 
   schedule = () => {
 
+    this.makeLogText('スケジュールの更新を開始しました。')
+
     axios.get('/api/schedule')
       .then((response) => {
 
@@ -73,6 +77,8 @@ class App extends React.Component {
         console.log('schedule success');
       })
       .then(() => {
+
+        this.makeLogText('スケジュールの更新を完了しました。')
 
         alert('スケジュールの更新が完了しました。')
       })
@@ -213,48 +219,32 @@ class App extends React.Component {
     this.schedule();
   }
 
+  makeLogText(logText) {
+
+    document.getElementById('logTbody').innerHTML += '<tr scope="row" ><th>' + new Date().toLocaleString() + '</th><td>' + logText + '</td></tr>';
+  }
+
   render() {
     return (
       <div>
       <div className="container">
         <div className="row mt-3">
-          <div className='col-md-2 col-sm-12 text-center'>
+          <div className='col-sm-2 text-center' id='logoDiv'>
             <a href='/'>
               <img src={imgLogo} id="logo" />
             </a>
             <br/>
             <input className="mt-3 mb-3 btn btn-outline-dark" type="button" value="最新の情報に更新" onClick={() => this.update()} id="updateButton" />
           </div>
-          <div className='col-md-10 col-sm-12'>
+          <div className='col-sm-10'>
+            <div className='overflow-scroll'  id="topTable">
             <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">システムアクセスログ</th>
-                  <td></td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr scope="row">
-                  <th>2021/10/17 18:19:46</th>
-                  <td>スケジュールの更新が押下されました。</td>
-                </tr>
-                <tr scope="row">
-                <th>2021/10/17 18:19:46</th>
-                  <td>スケジュールの更新が押下されました。</td>
-                </tr>
-                <tr scope="row">
-                <th>2021/10/17 18:19:46</th>
-                  <td>スケジュールの更新が押下されました。</td>
-                </tr>
-                <tr scope="row">
-                <th>2021/10/17 18:19:46</th>
-                  <td>スケジュールの更新が押下されました。</td>
-                </tr>
-              </tbody>
+              <tbody id="logTbody"/>
             </table>
+            </div>
           </div>
         </div>
-        <div className="contentDiv p-3">
+        <div className="contentDiv p-3 mt-3">
         <table className="table">
           <thead>
             <tr>

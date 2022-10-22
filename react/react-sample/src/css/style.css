@@ -36,3 +36,27 @@ footer {
 
   width: 150px;
 }
+
+#topTable {
+
+  height: 200px;
+}
+
+@media screen and (max-width:767px) {
+ 
+  #logoDiv {
+
+    height: 100%;
+  }
+
+  #logo {
+
+    width: 100%;
+    height: 100%;
+  }
+
+  #updateButton {
+
+    width: 100%;
+  }
+}
