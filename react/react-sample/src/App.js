@@ -337,12 +337,14 @@ class App extends React.Component {
               <td className='text-center align-middle' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
               <td className='text-center align-middle' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
               <td className='text-center align-middle' style={{display: target.BookBuildingString == '---'? '' : 'none'}}></td>
+              {/* SBI */}
               <td className='text-center align-middle' style={{display: this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kikanGai'? '' : 'none'}}>
                 <img src={kikanGai} id="statusImageForKikanGai" />
               </td>
               <td className='text-center align-middle' style={{display: (this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForSbi) == 'kanryo' || this.state.responseValueForSbiBookBuilding == 'ブックビルディングのお申し込みを受付いたしました。')? '' : 'none'}}>
                 <img src={kanryo} id="statusImageForKanryo" />
               </td>
+              {/* みずほ */}
               <td className='text-center align-middle' style={{display: this.checkBookoBuildingPossible(target.BookBuildingPossibleBoolStringForMizuho) == 'kikanGai'? '' : 'none'}}>
                 <img src={kikanGai} id="statusImageForKikanGai" />
               </td>
