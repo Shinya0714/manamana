@@ -35,6 +35,10 @@ github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221014041900-b7c41d2c5a5f
 github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221014041900-b7c41d2c5a5f/go.mod h1:qbRoCThlfoKVcldCpMska3N4uYWoTeDG7+H2DtVxr3E=
 github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221014042527-05a620ab47c1 h1:pIBJldIoHTiyFuzCwB7oMZn8d76Vw5grs5VY1OFKibk=
 github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221014042527-05a620ab47c1/go.mod h1:qbRoCThlfoKVcldCpMska3N4uYWoTeDG7+H2DtVxr3E=
+github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221018045351-e61ea1a28d26 h1:wfd1Y7SV6Cs49KghSgQ/yzEN8VMt3emcBTEAK5zw+M4=
+github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221018045351-e61ea1a28d26/go.mod h1:qbRoCThlfoKVcldCpMska3N4uYWoTeDG7+H2DtVxr3E=
+github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221018050308-cb5fff76d38f h1:F2SkWVY6d0xF/INAxbUsdwF3bCiv0kT/jbuJ7jx6E7E=
+github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221018050308-cb5fff76d38f/go.mod h1:qbRoCThlfoKVcldCpMska3N4uYWoTeDG7+H2DtVxr3E=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=

@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/Shinya0714/manamana/go/app/general v0.0.0-20221010085326-b9da6b4b0fd8
-	github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221014042527-05a620ab47c1
+	github.com/Shinya0714/manamana/go/app/rooting v0.0.0-20221018050308-cb5fff76d38f
 	github.com/labstack/echo/v4 v4.9.0
 )
 
