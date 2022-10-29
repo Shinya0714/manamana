@@ -136,12 +136,16 @@ class App extends React.Component {
   
     if(result) {
 
+      this.makeLogText('（SBI）【対象】\r\n' + '（' + tickerSymbol + '）' + companyName + 'のブックビルディングを実行しました。')
+
       axios.get('/api/sbiBookBuilding/' + tickerSymbol)
       .then((response) => {
 
         this.setState({responseValueForSbiBookBuilding: response.data})
 
         this.schedule();
+
+        this.makeLogText('（SBI）【対象】\r\n' + '（' + tickerSymbol + '）' + companyName + 'のブックビルディングを完了しました。')
       })
       .catch(console.error);
     }
