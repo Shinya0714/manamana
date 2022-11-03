@@ -95,25 +95,35 @@ func sbiBookBuildingMap() map[string]string {
 		fmt.Println(err)
 	}
 
-	element := page.FindByXPath("//*[@id='user_input']/input")
-	err = element.Fill(os.Getenv("SBI_USERNAME"))
+	err = page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
 	if err != nil {
 
 		fmt.Println(err)
 	}
 
-	element = page.FindByXPath("//*[@id='password_input']/input")
-	err = element.Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	err = page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
 	if err != nil {
 
 		fmt.Println(err)
 	}
 
-	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
+	err = page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
+	if err != nil {
 
-	page.Navigate("https://site2.sbisec.co.jp/ETGate/?OutSide=on&_ControlID=WPLETmgR001Control&_DataStoreID=DSWPLETmgR001Control&burl=search_domestic&dir=ipo%2F&file=stock_info_ipo.html&cat1=domestic&cat2=ipo&getFlg=on&int_pr1=150313_cmn_gnavi:6_dmenu_04")
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[4]/div/table/tbody/tr/td[1]/div/div[10]/div/div/a/img").Click()
+	err = page.Navigate("https://site2.sbisec.co.jp/ETGate/?OutSide=on&_ControlID=WPLETmgR001Control&_DataStoreID=DSWPLETmgR001Control&burl=search_domestic&dir=ipo%2F&file=stock_info_ipo.html&cat1=domestic&cat2=ipo&getFlg=on&int_pr1=150313_cmn_gnavi:6_dmenu_04")
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[4]/div/table/tbody/tr/td[1]/div/div[10]/div/div/a/img").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(3 * time.Second)
 
@@ -128,13 +138,13 @@ func sbiBookBuildingMap() map[string]string {
 		target, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[2]/td[5]").Text()
 		if err != nil {
 
-			// NOOP
+			fmt.Println(err)
 		} else {
 
 			targetTitle, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td[1]").Text()
 			if err != nil {
 
-				// NOOP
+				fmt.Println(err)
 			} else {
 
 				targetTitle = strings.ReplaceAll(targetTitle, "（株）", "")
@@ -167,8 +177,10 @@ func sbiBookBuildingMap() map[string]string {
 	err = driver.Stop()
 	if err != nil {
 
-		log.Println("sbiBookBuildingMap driver.Stop()", err)
+		fmt.Println(err)
 	}
+
+	fmt.Println(m)
 
 	return m
 }
