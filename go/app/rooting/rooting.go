@@ -88,13 +88,26 @@ type Item struct {
 func sbiBookBuildingMap() map[string]string {
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.sbisec.co.jp/ETGate")
+	err := page.Navigate("https://www.sbisec.co.jp/ETGate")
+	if err != nil {
 
-	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	element := page.FindByXPath("//*[@id='user_input']/input")
+	err = element.Fill(os.Getenv("SBI_USERNAME"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	element = page.FindByXPath("//*[@id='password_input']/input")
+	err = element.Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
 
@@ -149,6 +162,12 @@ func sbiBookBuildingMap() map[string]string {
 		}
 
 		m[targetCd] = bookBuildingPossibleString
+	}
+
+	err = driver.Stop()
+	if err != nil {
+
+		log.Println("sbiBookBuildingMap driver.Stop()", err)
 	}
 
 	return m
