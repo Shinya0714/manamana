@@ -138,13 +138,13 @@ func sbiBookBuildingMap() map[string]string {
 		target, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[2]/td[5]").Text()
 		if err != nil {
 
-			fmt.Println(err)
+			// fmt.Println(err)
 		} else {
 
 			targetTitle, err := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td[1]").Text()
 			if err != nil {
 
-				fmt.Println(err)
+				// fmt.Println(err)
 			} else {
 
 				targetTitle = strings.ReplaceAll(targetTitle, "（株）", "")
@@ -180,44 +180,92 @@ func sbiBookBuildingMap() map[string]string {
 		fmt.Println(err)
 	}
 
-	fmt.Println(m)
-
 	return m
 }
 
 func mizuhoBookBuildingMap() map[string]string {
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.mizuho-sc.com/index.html")
+	err := page.Navigate("https://www.mizuho-sc.com/index.html")
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[3]/div/header/div/div[5]/div/ul/li[7]/a/span").Click()
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[3]/div/header/div/div[5]/div/ul/li[7]/a/span").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(5 * time.Second)
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_ID"))
+	err = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_ID"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/div/ul/li[1]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_PASSWORD"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[2]/div/button").Click()
+	err = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/div/ul/li[1]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_PASSWORD"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[1]/input[1]").Fill(os.Getenv("MIZUHO_1"))
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[2]/input[1]").Fill(os.Getenv("MIZUHO_2"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_3"))
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[3]/label/input[1]").Fill(os.Getenv("MIZUHO_4"))
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[5]/label/input[1]").Fill(os.Getenv("MIZUHO_5"))
+	err = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[2]/div/button").Click()
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[2]/div/button").Click()
+		fmt.Println(err)
+	}
 
-	page.Navigate("https://mnc.mizuho-sc.com/web/rmfTrdStkIpoLstAction.do#IPOList")
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[1]/input[1]").Fill(os.Getenv("MIZUHO_1"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[2]/input[1]").Fill(os.Getenv("MIZUHO_2"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_3"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[3]/label/input[1]").Fill(os.Getenv("MIZUHO_4"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[5]/label/input[1]").Fill(os.Getenv("MIZUHO_5"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[2]/div/button").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.Navigate("https://mnc.mizuho-sc.com/web/rmfTrdStkIpoLstAction.do#IPOList")
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	m := make(map[string]string)
 
 	for i := 0; i < 50; i++ {
 
-		bookBuildingPossibleString := "false"
+		var bookBuildingPossibleString string
 
 		target, _ := page.AllByXPath("/html/body/div[1]/div[2]/main/div/div[4]/div[" + strconv.Itoa(i) + "]/div[1]/div/h3/span[1]/span").Text()
 
@@ -237,27 +285,56 @@ func mizuhoBookBuildingMap() map[string]string {
 		m[target] = bookBuildingPossibleString
 	}
 
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
 	return m
 }
 
 func rakutenBookBuildingMap() map[string]string {
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.rakuten-sec.co.jp/")
+	err := page.Navigate("https://www.rakuten-sec.co.jp/")
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(5 * time.Second)
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/input[1]").Fill(os.Getenv("RAKUTEN_ID"))
+	err = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/input[1]").Fill(os.Getenv("RAKUTEN_ID"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/div/input").Fill(os.Getenv("RAKUTEN_PASSWORD"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/button").Click()
+	err = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/div/input").Fill(os.Getenv("RAKUTEN_PASSWORD"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[1]/div/div[5]/div/ul/li[3]/a/span").Click()
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div/div[7]/div/ul/li[3]/a").Click()
+	err = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/button").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div/div[5]/div/ul/li[3]/a/span").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div/div[7]/div/ul/li[3]/a").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	m := make(map[string]string)
 
@@ -285,6 +362,12 @@ func rakutenBookBuildingMap() map[string]string {
 		m[targetCd] = bookBuildingPossibleString
 	}
 
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
 	return m
 }
 
@@ -294,19 +377,38 @@ func getSbiBalance(result chan string) {
 	defer log.Printf("getSbiBalance end")
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.sbisec.co.jp/ETGate")
+	err := page.Navigate("https://www.sbisec.co.jp/ETGate")
+	if err != nil {
 
-	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	err = page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(3 * time.Second)
 
-	page.FindByXPath("/html/body/div[1]/div[1]/div[2]/div/ul/li[3]/a/img").Click()
+	err = page.FindByXPath("/html/body/div[1]/div[1]/div[2]/div/ul/li[3]/a/img").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(3 * time.Second)
 
@@ -316,6 +418,12 @@ func getSbiBalance(result chan string) {
 		log.Printf("getSbiBalance err: %v\n", err)
 
 		kaitsukeKano2daysAfter = "読み込み失敗"
+	}
+
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
 	}
 
 	result <- kaitsukeKano2daysAfter
@@ -377,28 +485,74 @@ func getMizuhoBalance(result chan string) {
 	defer log.Printf("getMizuhoBalance end")
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.mizuho-sc.com/index.html")
+	err := page.Navigate("https://www.mizuho-sc.com/index.html")
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[3]/div/header/div/div[5]/div/ul/li[7]/a/span").Click()
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[3]/div/header/div/div[5]/div/ul/li[7]/a/span").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(5 * time.Second)
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_ID"))
+	err = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_ID"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/div/ul/li[1]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_PASSWORD"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[2]/div/button").Click()
+	err = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/div/ul/li[1]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_PASSWORD"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[1]/input[1]").Fill(os.Getenv("MIZUHO_1"))
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[2]/input[1]").Fill(os.Getenv("MIZUHO_2"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_3"))
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[3]/label/input[1]").Fill(os.Getenv("MIZUHO_4"))
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[5]/label/input[1]").Fill(os.Getenv("MIZUHO_5"))
+	err = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[2]/div/button").Click()
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[2]/div/button").Click()
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[1]/input[1]").Fill(os.Getenv("MIZUHO_1"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[2]/input[1]").Fill(os.Getenv("MIZUHO_2"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_3"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[3]/label/input[1]").Fill(os.Getenv("MIZUHO_4"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[5]/label/input[1]").Fill(os.Getenv("MIZUHO_5"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[2]/div/button").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	zandaka, err := page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/div/div[1]/div[2]/div[1]/div/div[3]/table[2]/tbody/tr/td/span").Text()
 	if err != nil {
@@ -406,6 +560,12 @@ func getMizuhoBalance(result chan string) {
 		fmt.Printf("getMizuhoBalance err: %v\n", err)
 
 		zandaka = "読み込み失敗"
+	}
+
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
 	}
 
 	result <- zandaka
@@ -433,17 +593,32 @@ func getRakutenBalance(result chan string) {
 	defer log.Printf("getRakutenBalance end")
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.rakuten-sec.co.jp/")
+	err := page.Navigate("https://www.rakuten-sec.co.jp/")
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(5 * time.Second)
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/input[1]").Fill(os.Getenv("RAKUTEN_ID"))
+	err = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/input[1]").Fill(os.Getenv("RAKUTEN_ID"))
+	if err != nil {
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/div/input").Fill(os.Getenv("RAKUTEN_PASSWORD"))
+		fmt.Println(err)
+	}
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/button").Click()
+	err = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/div/input").Fill(os.Getenv("RAKUTEN_PASSWORD"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/button").Click()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	time.Sleep(5 * time.Second)
 
@@ -453,6 +628,12 @@ func getRakutenBalance(result chan string) {
 		fmt.Printf("getRakutenBalance err: %v\n", err)
 
 		zandaka = "読み込み失敗"
+	}
+
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
 	}
 
 	result <- strings.Replace(string(zandaka), " 円", "", -1)
@@ -494,13 +675,16 @@ func GetSchedule(c echo.Context) (err error) {
 	defer log.Printf("getSchedule end")
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
 	sbiBookBuildingMap := sbiBookBuildingMap()
 	mizuhoBookBuildingMap := mizuhoBookBuildingMap()
 	rakutenBookBuildingMap := rakutenBookBuildingMap()
 
-	page.Navigate("https://www.nikkei.com/markets/kigyo/ipo/money-schedule/")
+	error := page.Navigate("https://www.nikkei.com/markets/kigyo/ipo/money-schedule/")
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	xpathStringForBookBuildingSpan := ""
 	xpathStringForCompanyNameSpan := ""
@@ -511,14 +695,6 @@ func GetSchedule(c echo.Context) (err error) {
 	companyNameString := ""
 	targetCdString := ""
 	targetPriceString := ""
-
-	var companyNameStringList []string
-	var targetCdStringList []string
-	var targetPriceStringList []string
-	var bookBuildingStringList []string
-	var bookBuildingPossibleBoolListForSbi []string
-	var bookBuildingPossibleBoolListForMizuho []string
-	var bookBuildingPossibleBoolListForRakuten []string
 
 	var data = Data{}
 	data.List = map[string]Item{}
@@ -547,11 +723,6 @@ func GetSchedule(c echo.Context) (err error) {
 			break
 		} else {
 
-			companyNameStringList = append(companyNameStringList, companyNameString)
-			targetCdStringList = append(targetCdStringList, targetCdString)
-			targetPriceStringList = append(targetPriceStringList, targetPriceString)
-			bookBuildingStringList = append(bookBuildingStringList, bookBuildingString)
-
 			if strings.EqualFold(sbiBookBuildingMap[targetCdString], "kanryo") {
 
 				bookBuildingPossibleBoolStringForSbi = "kanryo"
@@ -566,8 +737,6 @@ func GetSchedule(c echo.Context) (err error) {
 
 				bookBuildingPossibleBoolStringForSbi = "true"
 			}
-
-			bookBuildingPossibleBoolListForSbi = append(bookBuildingPossibleBoolListForSbi, bookBuildingPossibleBoolStringForSbi)
 
 			// みずほ
 			if strings.EqualFold(general.CheckBookoBuildingPossible(bookBuildingString), "kikanGai") {
@@ -585,8 +754,6 @@ func GetSchedule(c echo.Context) (err error) {
 				bookBuildingPossibleBoolStringForMizuho = "true"
 			}
 
-			bookBuildingPossibleBoolListForMizuho = append(bookBuildingPossibleBoolListForMizuho, bookBuildingPossibleBoolStringForMizuho)
-
 			// 楽天
 			if strings.EqualFold(rakutenBookBuildingMap[targetCdString], "kanryo") {
 
@@ -603,8 +770,6 @@ func GetSchedule(c echo.Context) (err error) {
 				bookBuildingPossibleBoolStringForRakuten = "true"
 			}
 
-			bookBuildingPossibleBoolListForRakuten = append(bookBuildingPossibleBoolListForRakuten, bookBuildingPossibleBoolStringForRakuten)
-
 			item := Item{TargetCdString: targetCdString, TargetPriceString: targetPriceString, CompanyNameString: companyNameString, BookBuildingString: bookBuildingString, BookBuildingPossibleBoolStringForSbi: bookBuildingPossibleBoolStringForSbi, BookBuildingPossibleBoolStringForMizuho: bookBuildingPossibleBoolStringForMizuho, BookBuildingPossibleBoolStringForRakuten: bookBuildingPossibleBoolStringForRakuten}
 			items = append(items, item)
 		}
@@ -619,6 +784,12 @@ func GetSchedule(c echo.Context) (err error) {
 
 	jsonMap := map[string]string{"outputJson": string(outputJson)}
 
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
 	return c.JSON(http.StatusOK, jsonMap)
 }
 
@@ -628,21 +799,44 @@ func MizuhoBookBuilding(c echo.Context) (err error) {
 	defer log.Printf("mizuhoBookBuilding end")
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.mizuho-sc.com/index.html")
+	error := page.Navigate("https://www.mizuho-sc.com/index.html")
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[3]/div/header/div/div[5]/div/ul/li[7]/a").Click()
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[3]/div/header/div/div[5]/div/ul/li[7]/a").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	time.Sleep(3 * time.Second)
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_ID"))
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_ID"))
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/div/ul/li[1]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_PASSWORD"))
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[2]/div/button").Click()
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/div/ul/li[1]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_PASSWORD"))
+	if error != nil {
 
-	page.Navigate("https://mnc.mizuho-sc.com/web/rmfTrdStkIpoLstAction.do#IPOList")
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[2]/form/div[2]/div/button").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.Navigate("https://mnc.mizuho-sc.com/web/rmfTrdStkIpoLstAction.do#IPOList")
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	m := make(map[string]string)
 
@@ -659,33 +853,87 @@ func MizuhoBookBuilding(c echo.Context) (err error) {
 
 	fmt.Println(tickerSymbol)
 
-	page.FindByXPath(m[tickerSymbol]).Click()
+	error = page.FindByXPath(m[tickerSymbol]).Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	time.Sleep(3 * time.Second)
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table/tbody/tr/td/p/a").Click()
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table/tbody/tr/td/p/a").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/div[2]/div/button").Click()
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table[1]/tbody/tr/td/p/a").Click()
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/div[2]/div/button").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table[2]/tbody/tr/td/p/a").Click()
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table[3]/tbody/tr/td/p/a").Click()
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table[1]/tbody/tr/td/p/a").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/div[3]/div/button").Click()
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[4]/form/div[2]/fieldset/div/div[2]/div/ul/li[4]/div/input[2]").Click()
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table[2]/tbody/tr/td/p/a").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[4]/form/div[3]/div/div/fieldset/input[2]").Click()
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[4]/form/div[4]/div[1]/button").Click()
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/table[3]/tbody/tr/td/p/a").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[5]/form/div[2]/div/div/div/fieldset/dl/dd/div[1]/div[1]/input[2]").Fill(os.Getenv("MIZUHO_TORIHIKI_PASSWORD"))
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[5]/form/div[3]/div[1]/button").Click()
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[3]/form/div[3]/div/button").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[4]/form/div[2]/fieldset/div/div[2]/div/ul/li[4]/div/input[2]").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[4]/form/div[3]/div/div/fieldset/input[2]").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[4]/form/div[4]/div[1]/button").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[5]/form/div[2]/div/div/div/fieldset/dl/dd/div[1]/div[1]/input[2]").Fill(os.Getenv("MIZUHO_TORIHIKI_PASSWORD"))
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[5]/form/div[3]/div[1]/button").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	resultString, _ := page.Title()
+
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	return c.JSON(http.StatusOK, resultString)
 }
@@ -696,19 +944,42 @@ func SbiBookBuilding(c echo.Context) (err error) {
 	defer log.Printf("sbiBookBuilding end")
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
-	page.Navigate("https://www.sbisec.co.jp/ETGate")
+	error := page.Navigate("https://www.sbisec.co.jp/ETGate")
+	if error != nil {
 
-	page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	error = page.FindByXPath("//*[@id='user_input']/input").Fill(os.Getenv("SBI_USERNAME"))
+	if error != nil {
 
-	page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
+		fmt.Println(error)
+	}
 
-	page.Navigate("https://site2.sbisec.co.jp/ETGate/?OutSide=on&_ControlID=WPLETmgR001Control&_DataStoreID=DSWPLETmgR001Control&burl=search_domestic&dir=ipo%2F&file=stock_info_ipo.html&cat1=domestic&cat2=ipo&getFlg=on&int_pr1=150313_cmn_gnavi:6_dmenu_04")
+	error = page.FindByXPath("//*[@id='password_input']/input").Fill(os.Getenv("SBI_LOGIN_PASSWORD"))
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[4]/div/table/tbody/tr/td[1]/div/div[10]/div/div/a/img").Click()
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/table/tbody/tr[1]/td[2]/div[2]/form/p[2]/input").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.Navigate("https://site2.sbisec.co.jp/ETGate/?OutSide=on&_ControlID=WPLETmgR001Control&_DataStoreID=DSWPLETmgR001Control&burl=search_domestic&dir=ipo%2F&file=stock_info_ipo.html&cat1=domestic&cat2=ipo&getFlg=on&int_pr1=150313_cmn_gnavi:6_dmenu_04")
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[4]/div/table/tbody/tr/td[1]/div/div[10]/div/div/a/img").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	time.Sleep(3 * time.Second)
 
@@ -718,7 +989,7 @@ func SbiBookBuilding(c echo.Context) (err error) {
 
 		targetCd := ""
 
-		targetXpathTableString := "false"
+		var targetXpathTableString string
 
 		target, _ := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + strconv.Itoa(i) + "]/tbody/tr/td/table/tbody/tr[2]/td[5]").Text()
 
@@ -748,19 +1019,49 @@ func SbiBookBuilding(c echo.Context) (err error) {
 
 	tickerSymbol := c.Param("tickerSymbol")
 
-	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + m[tickerSymbol] + "]/tbody/tr/td/table/tbody/tr[2]/td[5]/a/img").Click()
+	error = page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/div[2]/table[" + m[tickerSymbol] + "]/tbody/tr/td/table/tbody/tr[2]/td[5]/a/img").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[6]/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/input").Fill("100")
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[6]/tbody/tr/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td[1]/input").Click()
+	error = page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[6]/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/input").Fill("100")
+	if error != nil {
 
-	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[2]/input").Fill("NFXQCBUM")
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[3]/input").Click()
+	error = page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[6]/tbody/tr/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td[1]/input").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr/td/form/table[7]/tbody/tr[2]/td/input[1]").Click()
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[2]/input").Fill("NFXQCBUM")
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[8]/tbody/tr/td[1]/table/tbody/tr/td[3]/input").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr/td/form/table[7]/tbody/tr[2]/td/input[1]").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	resultString, _ := page.AllByXPath("/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr/td/table[3]/tbody/tr[1]/td/b").Text()
+
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	return c.JSON(http.StatusOK, resultString)
 }
@@ -785,26 +1086,48 @@ func RakutenBookBuilding(c echo.Context) (err error) {
 	defer log.Printf("RakutenBookBuilding end")
 
 	driver, page := templateWebDriver()
-	defer driver.Stop()
 
 	tickerSymbol := c.Param("tickerSymbol")
 
 	fmt.Println(tickerSymbol)
 
-	// 対象サイトに移動
-	page.Navigate("https://www.rakuten-sec.co.jp/")
+	error := page.Navigate("https://www.rakuten-sec.co.jp/")
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	time.Sleep(5 * time.Second)
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/input[1]").Fill(os.Getenv("RAKUTEN_ID"))
+	error = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/input[1]").Fill(os.Getenv("RAKUTEN_ID"))
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/div/input").Fill(os.Getenv("RAKUTEN_PASSWORD"))
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/button").Click()
+	error = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/div/input").Fill(os.Getenv("RAKUTEN_PASSWORD"))
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[1]/div/div[5]/div/ul/li[3]/a/span").Click()
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[1]/div/div[7]/div/ul/li[3]/a").Click()
+	error = page.FindByXPath("/html/body/div[2]/section[1]/div/div[1]/div[3]/div[1]/form/button").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div/div[5]/div/ul/li[3]/a/span").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[1]/div/div[7]/div/ul/li[3]/a").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	m := make(map[string]string)
 
@@ -819,19 +1142,53 @@ func RakutenBookBuilding(c echo.Context) (err error) {
 		m[targetCd] = targetXpath
 	}
 
-	page.FindByXPath(m[tickerSymbol]).Click()
+	error = page.FindByXPath(m[tickerSymbol]).Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td[1]/div/table/tbody/tr/td/form/table[2]/tbody/tr/td/div/input[1]").Click()
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[2]/tbody/tr[1]/td[1]/div/nobr/input").Fill("100")
+	error = page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td[1]/div/table/tbody/tr/td/form/table[2]/tbody/tr/td/div/input[1]").Click()
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[2]/tbody/tr[2]/td[1]/div/nobr/select").Select("成行")
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[3]/tbody/tr/td/div/input").Click()
+	error = page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[2]/tbody/tr[1]/td[1]/div/nobr/input").Fill("100")
+	if error != nil {
 
-	page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr/td[2]/input").Fill(os.Getenv("RAKUTEN_TORIHIKI_PASSWORD"))
+		fmt.Println(error)
+	}
 
-	page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[3]/tbody/tr/td/div/input[1]").Click()
+	error = page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[2]/tbody/tr[2]/td[1]/div/nobr/select").Select("成行")
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[3]/tbody/tr/td/div/input").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr/td[2]/input").Fill(os.Getenv("RAKUTEN_TORIHIKI_PASSWORD"))
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	error = page.FindByXPath("/html/body/div[2]/div/div[1]/div/table/tbody/tr/td/div/table/tbody/tr/td/form/table[3]/tbody/tr/td/div/input[1]").Click()
+	if error != nil {
+
+		fmt.Println(error)
+	}
+
+	err = driver.Stop()
+	if err != nil {
+
+		fmt.Println(err)
+	}
 
 	return c.JSON(http.StatusOK, "成功")
 }
@@ -850,7 +1207,11 @@ func templateWebDriver() (*agouti.WebDriver, *agouti.Page) {
 		}),
 	)
 
-	driver.Start()
+	error := driver.Start()
+	if error != nil {
+
+		fmt.Println(error)
+	}
 
 	page, err := driver.NewPage()
 	if err != nil {
