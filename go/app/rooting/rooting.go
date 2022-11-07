@@ -644,19 +644,37 @@ func getRakutenBalance(result chan string) {
 
 func GetBalance(c echo.Context) (err error) {
 
+	count = 1 * 10
+	time.Sleep(time.Second)
+
 	channel := make(chan string)
+
+	count = 2 * 10
+	time.Sleep(time.Second)
 
 	go getSbiBalance(channel)
 	channelResult := <-channel
 
+	count = 3 * 10
+	time.Sleep(time.Second)
+
 	go getMizuhoBalance(channel)
 	channelResult2 := <-channel
+
+	count = 4 * 10
+	time.Sleep(time.Second)
 
 	go getSmbcBalance(channel)
 	channelResult3 := <-channel
 
+	count = 5 * 10
+	time.Sleep(time.Second)
+
 	go getRakutenBalance(channel)
 	channelResult4 := <-channel
+
+	count = 6 * 10
+	time.Sleep(time.Second)
 
 	jsonMap := map[string]string{
 		"sbiBalance":     channelResult,
@@ -665,9 +683,18 @@ func GetBalance(c echo.Context) (err error) {
 		"rakutenBalance": channelResult4,
 	}
 
+	count = 7 * 10
+	time.Sleep(time.Second)
+
 	for k, v := range jsonMap {
 		log.Printf("key: %s, value: %s\n", k, v)
 	}
+
+	count = 9 * 10
+	time.Sleep(time.Second)
+
+	count = 10 * 10
+	time.Sleep(time.Second)
 
 	return c.JSON(http.StatusOK, jsonMap)
 }
