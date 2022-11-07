@@ -30,9 +30,10 @@ import (
 // }
 
 type Data struct {
-	List map[string]Item `json:"	"`
+	List map[string]Item `json:""`
 }
 
+//nolint:govet
 type Item struct {
 	TargetCdString                           string `json:targetCdString`
 	TargetPriceString                        string `json:targetPriceString`
@@ -84,6 +85,8 @@ type Item struct {
 // 	fmt.Println(target.updateTime)
 // 	fmt.Println(target.balance)
 // }
+
+var count int
 
 func sbiBookBuildingMap() map[string]string {
 
@@ -1220,4 +1223,30 @@ func templateWebDriver() (*agouti.WebDriver, *agouti.Page) {
 	}
 
 	return driver, page
+}
+
+func LongTask(c echo.Context) (err error) {
+
+	// progress := &Progress{}
+
+	for i := 0; i <= 10; i++ {
+		// progress.Lock()
+		count = i * 10
+		// progress.Unlock()
+		time.Sleep(time.Second)
+	}
+
+	return c.JSON(http.StatusOK, "test")
+}
+
+func ProgressFunc(c echo.Context) (err error) {
+
+	// progress := &Progress{}
+
+	// progress.RLock()
+	// json.NewEncoder(w).Encode(progress)
+	fmt.Println(count)
+	// progress.RUnlock()
+
+	return c.JSON(http.StatusOK, count)
 }
