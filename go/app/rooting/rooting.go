@@ -44,6 +44,11 @@ type Item struct {
 	BookBuildingPossibleBoolStringForRakuten string `json:bookBuildingPossibleBoolStringForRakuten`
 }
 
+const (
+	trueString  = "true"
+	falseString = "true"
+)
+
 // type Owner struct {
 // 	id         uint   `gorm:"primary_key"`
 // 	createTime string `column:"create_time"`
@@ -164,13 +169,13 @@ func sbiBookBuildingMap() map[string]string {
 
 			if strings.EqualFold(target, "") {
 
-				bookBuildingPossibleString = "true"
+				bookBuildingPossibleString = trueString
 			} else if strings.EqualFold(target, "取消   訂正") {
 
 				bookBuildingPossibleString = "kanryo"
 			} else {
 
-				bookBuildingPossibleString = "false"
+				bookBuildingPossibleString = falseString
 			}
 		}
 
@@ -704,17 +709,29 @@ func GetSchedule(c echo.Context) (err error) {
 	log.Printf("getSchedule start")
 	defer log.Printf("getSchedule end")
 
+	count = 1 * 10
+	time.Sleep(time.Second)
+
 	driver, page := templateWebDriver()
+
+	count = 2 * 10
+	time.Sleep(time.Second)
 
 	sbiBookBuildingMap := sbiBookBuildingMap()
 	mizuhoBookBuildingMap := mizuhoBookBuildingMap()
 	rakutenBookBuildingMap := rakutenBookBuildingMap()
+
+	count = 3 * 10
+	time.Sleep(time.Second)
 
 	error := page.Navigate("https://www.nikkei.com/markets/kigyo/ipo/money-schedule/")
 	if error != nil {
 
 		fmt.Println(error)
 	}
+
+	count = 4 * 10
+	time.Sleep(time.Second)
 
 	xpathStringForBookBuildingSpan := ""
 	xpathStringForCompanyNameSpan := ""
@@ -726,10 +743,16 @@ func GetSchedule(c echo.Context) (err error) {
 	targetCdString := ""
 	targetPriceString := ""
 
+	count = 5 * 10
+	time.Sleep(time.Second)
+
 	var data = Data{}
 	data.List = map[string]Item{}
 
 	items := []Item{}
+
+	count = 6 * 10
+	time.Sleep(time.Second)
 
 	for i := 1; i <= 50; i++ {
 
@@ -805,6 +828,9 @@ func GetSchedule(c echo.Context) (err error) {
 		}
 	}
 
+	count = 7 * 10
+	time.Sleep(time.Second)
+
 	// jsonエンコード
 	outputJson, err := json.Marshal(&items)
 	if err != nil {
@@ -812,13 +838,22 @@ func GetSchedule(c echo.Context) (err error) {
 		log.Printf("getSchedule err: %v\n", err)
 	}
 
+	count = 8 * 10
+	time.Sleep(time.Second)
+
 	jsonMap := map[string]string{"outputJson": string(outputJson)}
+
+	count = 9 * 10
+	time.Sleep(time.Second)
 
 	err = driver.Stop()
 	if err != nil {
 
 		fmt.Println(err)
 	}
+
+	count = 10 * 10
+	time.Sleep(time.Second)
 
 	return c.JSON(http.StatusOK, jsonMap)
 }
@@ -953,7 +988,9 @@ func MizuhoBookBuilding(c echo.Context) (err error) {
 
 	error = page.FindByXPath("/html/body/div[1]/div[2]/main/div/div[5]/form/div[3]/div[1]/button").Click()
 	if error != nil {
-
+		for i, v := range os.Args {
+			fmt.Printf("args[%d] -> %s\n", i, v)
+		}
 		fmt.Println(error)
 	}
 
