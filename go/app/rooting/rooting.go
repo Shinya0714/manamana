@@ -1,6 +1,7 @@
 package rooting
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -20,6 +21,10 @@ import (
 	"github.com/labstack/echo/v4"
 	// "github.com/labstack/echo/v4/middleware"
 	"github.com/sclevine/agouti"
+
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/api/calendar/v3"
 )
 
 // type Owner struct {
@@ -92,6 +97,16 @@ const (
 // }
 
 var count int
+
+type Schedule struct {
+	Title    string
+	Location string
+	Year     string
+	Month    string
+	Day      string
+	Start    string
+	End      string
+}
 
 func sbiBookBuildingMap() map[string]string {
 
@@ -289,6 +304,9 @@ func mizuhoBookBuildingMap() map[string]string {
 
 			bookBuildingPossibleString = "false"
 		}
+
+		fmt.Println(target)
+		fmt.Println(bookBuildingPossibleString)
 
 		m[target] = bookBuildingPossibleString
 	}
@@ -1042,6 +1060,8 @@ func MizuhoBookBuilding(c echo.Context) (err error) {
 		fmt.Println(err)
 	}
 
+	addGoogleCalendar()
+
 	return c.JSON(http.StatusOK, resultString)
 }
 
@@ -1306,7 +1326,7 @@ func templateWebDriver() (*agouti.WebDriver, *agouti.Page) {
 
 		agouti.ChromeOptions("args", []string{
 
-			"--headless",
+			// "--headless",
 			"--window-size=1980,1200",
 			"--blink-settings=imagesEnabled=false",
 			"--disable-gpu",
@@ -1331,12 +1351,151 @@ func templateWebDriver() (*agouti.WebDriver, *agouti.Page) {
 
 func ProgressFunc(c echo.Context) (err error) {
 
-	// progress := &Progress{}
-
-	// progress.RLock()
-	// json.NewEncoder(w).Encode(progress)
 	fmt.Println(count)
-	// progress.RUnlock()
 
 	return c.JSON(http.StatusOK, count)
+}
+
+func getClient(config *oauth2.Config) *http.Client {
+
+	tokFile := "token.json"
+	tok, err := tokenFromFile(tokFile)
+	if err != nil {
+		tok = getTokenFromWeb(config)
+		saveToken(tokFile, tok)
+	}
+	return config.Client(context.Background(), tok)
+}
+
+func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
+	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
+	fmt.Printf("Go to the following link in your browser then type the "+
+		"authorization code: \n%v\n", authURL)
+
+	var authCode string
+	if _, err := fmt.Scan(&authCode); err != nil {
+		log.Fatalf("Unable to read authorization code: %v", err)
+	}
+
+	tok, err := config.Exchange(context.TODO(), authCode)
+	if err != nil {
+		log.Fatalf("Unable to retrieve token from web: %v", err)
+	}
+	return tok
+}
+
+func tokenFromFile(file string) (*oauth2.Token, error) {
+	f, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	tok := &oauth2.Token{}
+	err = json.NewDecoder(f).Decode(tok)
+	return tok, err
+}
+
+func saveToken(path string, token *oauth2.Token) {
+	fmt.Printf("Saving credential file to: %s\n", path)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
+	if err != nil {
+		log.Fatalf("Unable to cache oauth token: %v", err)
+	}
+	defer f.Close()
+	json.NewEncoder(f).Encode(token)
+}
+
+func SetSchedule(scheduleMap map[string]string) *Schedule {
+	return &Schedule{
+		Title:    scheduleMap["Title"],
+		Location: scheduleMap["Location"],
+		Year:     scheduleMap["Year"],
+		Month:    scheduleMap["Month"],
+		Day:      scheduleMap["Day"],
+		Start:    scheduleMap["Start"],
+		End:      scheduleMap["End"],
+	}
+}
+
+func (schedule Schedule) createEventData() *calendar.Event {
+
+	start_datatime := schedule.Year + "-" + schedule.Month + "-" + schedule.Day + "T" + schedule.Start + ":00:00+09:00"
+	end_datatime := schedule.Year + "-" + schedule.Month + "-" + schedule.Day + "T" + schedule.End + ":00:00+09:00"
+
+	event := &calendar.Event{
+		Summary:  schedule.Title,
+		Location: schedule.Location,
+		Start: &calendar.EventDateTime{
+			DateTime: start_datatime,
+			TimeZone: "Asia/Tokyo",
+		},
+		End: &calendar.EventDateTime{
+			DateTime: end_datatime,
+			TimeZone: "Asia/Tokyo",
+		},
+	}
+
+	return event
+}
+
+func readFileByCredentialsJson() []byte {
+
+	b, err := os.ReadFile("/Users/Owner/manamana/go/app/rooting/credentials.json")
+	if err != nil {
+		log.Fatalf("Unable to read client secret file: %v", err)
+	}
+
+	return b
+}
+
+func addGoogleCalendar() {
+
+	config, err := google.ConfigFromJSON(readFileByCredentialsJson(), calendar.CalendarScope)
+	if err != nil {
+		log.Fatalf("Unable to parse client secret file to config: %v", err)
+	}
+	client := getClient(config)
+
+	srv, err := calendar.New(client)
+	if err != nil {
+		log.Fatalf("Unable to retrieve Calendar client: %v", err)
+	}
+
+	m := map[string]string{}
+
+	m["Title"] = "testのてすと"
+	m["Location"] = "locationのてすと"
+	m["Year"] = "2022"
+	m["Month"] = "12"
+	m["Day"] = "25"
+	m["Start"] = "13"
+	m["End"] = "14"
+
+	schedule := SetSchedule(m)
+
+	calendarIdString := os.Getenv("TARGET_ID_FOR_GOOGLE_CALENDAR_API")
+
+	_, err = srv.Events.Insert(calendarIdString, schedule.createEventData()).Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve Calendar client: %v", err)
+	}
+
+	t := time.Now().Format(time.RFC3339)
+	events, err := srv.Events.List("primary").ShowDeleted(false).
+		SingleEvents(true).TimeMin(t).MaxResults(10).OrderBy("startTime").Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
+	}
+	fmt.Println("Upcoming events:")
+	if len(events.Items) == 0 {
+		fmt.Println("No upcoming events found.")
+	} else {
+		for _, item := range events.Items {
+			date := item.Start.DateTime
+			if date == "" {
+				date = item.Start.Date
+			}
+			fmt.Printf("%v (%v)\n", item.Summary, date)
+		}
+	}
 }

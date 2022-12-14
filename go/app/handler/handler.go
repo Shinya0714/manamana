@@ -20,7 +20,6 @@ func Handler() {
 	e.GET("/sbiBookBuilding/:tickerSymbol", rooting.SbiBookBuilding)
 	e.GET("/mizuhoBookBuilding/:tickerSymbol", rooting.MizuhoBookBuilding)
 	e.GET("/smbcBookBuilding/:tickerSymbol", rooting.SmbcBookBuilding)
-	e.GET("/longtask", rooting.LongTask)
 	e.GET("/progress", rooting.ProgressFunc)
 
 	e.Logger.Fatal(e.Start(":8000"))

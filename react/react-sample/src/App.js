@@ -40,6 +40,7 @@ class App extends React.Component {
       smbcBalanceRenderingFlg: false,
       rakutenBalanceRenderingFlg: false,
       
+      progressRenderingFlg: false,
       scheduleRenderingFlg: false,
       
       balance: 0
@@ -217,28 +218,116 @@ class App extends React.Component {
     return fullDate;
   }
 
-  update() {
-
-    this.getBalance();
-    this.schedule();
-  }
-
   makeLogText(logText) {
 
     document.getElementById('logTbody').innerHTML += '<tr scope="row" ><th>' + new Date().toLocaleString() + '</th><td>' + logText + '</td></tr>';
   }
 
+  interval = async() => {
+    let res = await fetch("/api/progress");
+    let data = await res.json();
+    let progress = document.getElementById("progress");
+    console.log(data)
+    progress.style.width = data + "%";
+    progress.value = data;
+    progress.innerHTML = data + "%";
+  }
+
+  start = async() => {
+
+    this.makeLogText('買い付け余力の更新を開始しました。')
+
+    this.setState({progressRenderingFlg: true})
+    let progress = document.getElementById("progress");
+    progress.value = 0;
+    progress.innerHTML = "0%";
+    let id = setInterval(this.interval, 1000);
+    let res = await fetch("/api/balance");
+    let data = await res.json();
+
+    var sbiBalance = data.sbiBalance
+    var mizuhoBalance = data.mizuhoBalance
+    var smbcBalance = data.smbcBalance
+    var rakutenBalance = data.rakutenBalance
+
+    this.setState({responseValueForSbi: sbiBalance})
+    this.setState({responseValueForMizuho: mizuhoBalance})
+    this.setState({responseValueForSmbc: smbcBalance})
+    this.setState({responseValueForRakuten: rakutenBalance})
+
+    if(sbiBalance != null) {
+
+      this.setState({sbiBalanceRenderingFlg: true})
+    }
+
+    if(mizuhoBalance != null) {
+
+      this.setState({mizuhoBalanceRenderingFlg: true})
+    }
+
+    if(smbcBalance != null) {
+
+      this.setState({smbcBalanceRenderingFlg: true})
+    }
+
+    if(rakutenBalance != null) {
+
+      this.setState({rakutenBalanceRenderingFlg: true})
+    }
+
+    clearInterval(id);
+    this.setState({progressRenderingFlg: false})
+
+    this.makeLogText('買い付け余力の更新を完了しました。')
+
+    alert('買い付け余力の更新が完了しました。')
+  }
+
+  scheduleStart = async() => {
+
+    this.makeLogText('スケジュールの更新を開始しました。')
+
+    this.setState({progressRenderingFlg: true})
+    let progress = document.getElementById("progress");
+    progress.value = 0;
+    progress.innerHTML = "0%";
+    let id = setInterval(this.interval, 1000);
+    let res = await fetch("/api/schedule");
+    let data = await res.json();
+
+    var jsonObject = JSON.parse(data.outputJson)
+
+    console.log(data.outputJson)
+
+    this.setState({dataList: jsonObject})
+
+    console.log('this.state.dataList:' + this.state.dataList);
+
+    if(jsonObject != null) {
+
+      this.setState({scheduleRenderingFlg: true})
+    }
+
+    clearInterval(id);
+    this.setState({progressRenderingFlg: false})
+
+    this.makeLogText('スケジュールの更新を完了しました。')
+
+    alert('スケジュールの更新が完了しました。')
+  }
+
   render() {
     return (
       <div>
+      <div className="progress" style={{display: this.state.progressRenderingFlg? '' : 'none'}}>
+        <div className="progress-bar progress-bar-striped progress-bar-animated" id="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+      </div>
       <div className="container">
         <div className="row mt-3">
           <div className='col-sm-2 text-center' id='logoDiv'>
             <a href='/'>
               <img src={imgLogo} id="logo" />
             </a>
-            <br/>
-            <input className="mt-3 mb-3 btn btn-outline-dark" type="button" value="最新の情報に更新" onClick={() => this.update()} id="updateButton" />
           </div>
           <div className='col-sm-10'>
             <div className='overflow-scroll'  id="topTable">
@@ -249,11 +338,12 @@ class App extends React.Component {
           </div>
         </div>
         <div className="contentDiv p-3 mt-3">
+        <input className="mt-3 mb-3 btn btn-outline-dark" type="button" value="最新の情報に更新" id="start" onClick={() => this.start()} />
         <table className="table">
           <thead>
             <tr>
               <th scope="col">証券会社</th>
-              <th scope="col" onClick={() => this.test()}>買い付け余力</th>
+              <th scope="col">買い付け余力</th>
             </tr>
           </thead>
           <tbody>
@@ -301,6 +391,7 @@ class App extends React.Component {
         </table>
       </div>
       <div className="contentDiv p-3 mt-3 table-responsive-sm">
+      <input className="mt-3 mb-3 btn btn-outline-dark" type="button" value="最新の情報に更新" id="start" onClick={() => this.scheduleStart()} />
         <table className="table">
           <thead>
             <tr>
