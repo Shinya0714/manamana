@@ -649,6 +649,8 @@ func getRakutenBalance(result chan string) {
 
 func GetBalance(c echo.Context) (err error) {
 
+	count = 0
+
 	count = 1 * 10
 	time.Sleep(time.Second)
 
@@ -705,6 +707,8 @@ func GetBalance(c echo.Context) (err error) {
 }
 
 func GetSchedule(c echo.Context) (err error) {
+
+	count = 0
 
 	log.Printf("getSchedule start")
 	defer log.Printf("getSchedule end")
@@ -895,6 +899,42 @@ func MizuhoBookBuilding(c echo.Context) (err error) {
 	if error != nil {
 
 		fmt.Println(error)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[1]/input[1]").Fill(os.Getenv("MIZUHO_1"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[1]/div/ul/li[1]/div/label[2]/input[1]").Fill(os.Getenv("MIZUHO_2"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[1]/label/input[1]").Fill(os.Getenv("MIZUHO_3"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[3]/label/input[1]").Fill(os.Getenv("MIZUHO_4"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[1]/fieldset/div/div[2]/div/ul/li[2]/div[5]/label/input[1]").Fill(os.Getenv("MIZUHO_5"))
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	err = page.FindByXPath("/html/body/div[1]/div[1]/main/div/div[2]/form/div[2]/div/button").Click()
+	if err != nil {
+
+		fmt.Println(err)
 	}
 
 	error = page.Navigate("https://mnc.mizuho-sc.com/web/rmfTrdStkIpoLstAction.do#IPOList")
@@ -1287,20 +1327,6 @@ func templateWebDriver() (*agouti.WebDriver, *agouti.Page) {
 	}
 
 	return driver, page
-}
-
-func LongTask(c echo.Context) (err error) {
-
-	// progress := &Progress{}
-
-	for i := 0; i <= 10; i++ {
-		// progress.Lock()
-		count = i * 10
-		// progress.Unlock()
-		time.Sleep(time.Second)
-	}
-
-	return c.JSON(http.StatusOK, "test")
 }
 
 func ProgressFunc(c echo.Context) (err error) {
